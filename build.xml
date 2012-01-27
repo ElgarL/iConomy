@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="iConomy" default="makejar" basedir=".">
+  <target name ="makejar" description="Create a jar for the iConomy 5.01 project">
+    <jar jarfile="../lib/iConomy.jar" includes="**" basedir="bin"/>
+  </target>
+</project>
