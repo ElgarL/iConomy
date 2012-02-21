@@ -6,12 +6,11 @@ public class AccountRemoveEvent extends Event {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private final String account;
 	private boolean cancelled = false;
 
 	public AccountRemoveEvent(String account) {
-		super("ACCOUNT_REMOVE");
+		super();
 		this.account = account;
 	}
 

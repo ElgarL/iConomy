@@ -6,12 +6,11 @@ public class AccountSetEvent extends Event {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private final String account;
 	private double balance;
 
 	public AccountSetEvent(String account, double balance) {
-		super("ACCOUNT_UPDATE");
+		super();
 		this.account = account;
 		this.balance = balance;
 	}

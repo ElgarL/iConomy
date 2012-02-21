@@ -6,12 +6,11 @@ public class AccountResetEvent extends Event {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private final String account;
 	private boolean cancelled = false;
 
 	public AccountResetEvent(String account) {
-		super("ACCOUNT_RESET");
+		super();
 		this.account = account;
 	}
 

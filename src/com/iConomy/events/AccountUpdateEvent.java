@@ -6,7 +6,6 @@ public class AccountUpdateEvent extends Event {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private final String account;
 	private double balance;
 	private double previous;
@@ -15,7 +14,7 @@ public class AccountUpdateEvent extends Event {
 
 	public AccountUpdateEvent(String account, double previous, double balance,
 			double amount) {
-		super("ACCOUNT_UPDATE");
+		super();
 		this.account = account;
 		this.previous = previous;
 		this.balance = balance;
