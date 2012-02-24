@@ -1,6 +1,7 @@
 package com.iConomy.events;
 
 import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 
 public class AccountRemoveEvent extends Event {
 	/**
@@ -8,6 +9,7 @@ public class AccountRemoveEvent extends Event {
 	 */
 	private final String account;
 	private boolean cancelled = false;
+	private static final HandlerList handlers = new HandlerList();
 
 	public AccountRemoveEvent(String account) {
 		super();
@@ -24,6 +26,14 @@ public class AccountRemoveEvent extends Event {
 
 	public void setCancelled(boolean cancelled) {
 		this.cancelled = cancelled;
+	}
+
+	public HandlerList getHandlers() {
+		return handlers;
+	}
+
+	public static HandlerList getHandlerList() {
+		return handlers;
 	}
 }
 
