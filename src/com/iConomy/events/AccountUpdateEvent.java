@@ -1,6 +1,7 @@
 package com.iConomy.events;
 
 import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 
 public class AccountUpdateEvent extends Event {
 	/**
@@ -11,6 +12,7 @@ public class AccountUpdateEvent extends Event {
 	private double previous;
 	private double amount;
 	private boolean cancelled = false;
+	private static final HandlerList handlers = new HandlerList();
 
 	public AccountUpdateEvent(String account, double previous, double balance,
 			double amount) {
@@ -48,5 +50,13 @@ public class AccountUpdateEvent extends Event {
 
 	public void setCancelled(boolean cancelled) {
 		this.cancelled = cancelled;
+	}
+
+	public HandlerList getHandlers() {
+		return handlers;
+	}
+
+	public static HandlerList getHandlerList() {
+		return handlers;
 	}
 }
