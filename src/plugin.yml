@@ -6,7 +6,7 @@ load: startup
 commands:
     money:
         description: Controls account balances and more
-        usage:
+        usage: /money
     bank:
         description: Control, list, create, and do various bank features.
-        usage:
+        usage: /bank
