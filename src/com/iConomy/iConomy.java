@@ -294,7 +294,7 @@ public class iConomy extends JavaPlugin
   private void extract(String name) {
     File actual = new File(getDataFolder(), name);
     if (!actual.exists()) {
-      InputStream input = getClass().getResourceAsStream("/default/" + name);
+      InputStream input = getClass().getResourceAsStream("/" + name);
       if (input != null) {
         FileOutputStream output = null;
         try
