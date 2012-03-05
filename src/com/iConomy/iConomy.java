@@ -167,8 +167,7 @@ public class iConomy extends JavaPlugin
     split[0] = cmd.getName().toLowerCase();
     System.arraycopy(args, 0, split, 1, args.length);
 
-    playerListener.onPlayerCommand(sender, split);
-    return false;
+    return playerListener.onPlayerCommand(sender, split);
   }
 
   private void update(FileManager file, double version) {

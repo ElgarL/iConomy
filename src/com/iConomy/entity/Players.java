@@ -18,6 +18,8 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -914,8 +916,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
        System.out.println("[iConomy] Error creating / grabbing account for: " + player.getName());
    }
  
-   @EventHandler(priority = EventPriority.NORMAL)
-   public void onPlayerCommand(CommandSender sender, String[] split)
+   public boolean onPlayerCommand(CommandSender sender, String[] split)
    {
      Messaging.save(sender);
      boolean isPlayer = sender instanceof Player;
@@ -930,19 +931,19 @@ import org.bukkit.event.player.PlayerJoinEvent;
            Messaging.send("`RCannot show bank list without organism.");
          }
  
-         return;
+         return true;
        case 2:
          if ((Misc.is(split[1], new String[] { "list", "-l" })) && (Constants.BankingMultiple)) {
            if (!iConomy.hasPermissions(sender, "iConomy.bank.list")) {
-             return;
+             return true;
            }
  
-           showBankList(sender, 0); return;
+           showBankList(sender, 0); return true;
          }
  
          if (Misc.is(split[1], new String[] { "main", "-m" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.bank.main")) {
-             return;
+             return true;
            }
  
            if (isPlayer) {
@@ -958,18 +959,18 @@ import org.bukkit.event.player.PlayerJoinEvent;
              }
            }
            else {
-             Messaging.send("`RCannot show main bank without organism.");
+             Messaging.send(ChatColor.RED + "Cannot show main bank without organism.");
            }
  
-           return;
+           return true;
          }
  
          if (Misc.is(split[1], new String[] { "help", "?", "create", "-c", "remove", "-r", "set", "-s", "send", "->", "deposit", "-d", "join", "-j", "leave", "-l" }))
          {
-           getBankHelp(player); return;
+           getBankHelp(player); return true;
          }
          if (!iConomy.hasPermissions(sender, "iConomy.bank.access")) {
-           return;
+           return true;
          }
  
          Player online = iConomy.getBukkitServer().getPlayer(split[1]);
@@ -980,23 +981,23 @@ import org.bukkit.event.player.PlayerJoinEvent;
  
          showBankAccounts(sender, split[1]);
  
-         return;
+         return true;
        case 3:
          if ((Misc.is(split[1], new String[] { "list", "-l" })) && (Constants.BankingMultiple)) {
            if (!iConomy.hasPermissions(sender, "iConomy.bank.list")) {
-             return;
+             return true;
            }
  
            int page = 0;
            try {
              page = Integer.parseInt(split[2]); } catch (NumberFormatException e) {
            }
-           showBankList(sender, page); return;
+           showBankList(sender, page); return true;
          }
  
          if ((Misc.is(split[1], new String[] { "main", "-m" })) && (Constants.BankingMultiple)) {
            if (!iConomy.hasPermissions(sender, "iConomy.bank.main.view")) {
-             return;
+             return true;
            }
  
            Player check = Misc.playerMatch(split[2]);
@@ -1021,42 +1022,42 @@ import org.bukkit.event.player.PlayerJoinEvent;
              }
            }
            else {
-             Messaging.send("`RPlayer name was empty or invalid.");
+             Messaging.send(ChatColor.RED + "Player name was empty or invalid.");
            }
  
-           return;
+           return true;
          }
  
          if (Misc.is(split[1], new String[] { "create", "-c" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.admin.bank.create")) {
-             return;
+             return true;
            }
  
            createBank(sender, split[2]);
-           return;
+           return true;
          }
  
          if (Misc.is(split[1], new String[] { "join", "-j" })) {
            if ((!iConomy.hasPermissions(sender, "iConomy.bank.join")) && (isPlayer)) {
-             return;
+             return true;
            }
  
            createBankAccount(sender, split[2], player.getName());
-           return;
+           return true;
          }
  
          if (Misc.is(split[1], new String[] { "leave", "-l" })) {
            if ((!iConomy.hasPermissions(sender, "iConomy.bank.leave")) && (isPlayer)) {
-             return;
+             return true;
            }
  
            removeBankAccount(sender, split[2], player.getName());
-           return;
+           return true;
          }
  
          if (Misc.is(split[1], new String[] { "deposit", "-d" })) {
            if ((!iConomy.hasPermissions(sender, "iConomy.bank.deposit")) && (isPlayer)) {
-             return;
+             return true;
            }
  
            Double amount = Double.valueOf(0.0D);
@@ -1065,7 +1066,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  
            if ((bank == null) || (bank.isEmpty())) {
              Messaging.send(this.Template.color("error.bank.account.none"));
-             return;
+             return true;
            }
            try
            {
@@ -1078,16 +1079,16 @@ import org.bukkit.event.player.PlayerJoinEvent;
              Messaging.send("`rInvalid amount` `f" + amount);
              Messaging.send("`rUsage: `w/bank `r[`wbank-name`r] `Rdeposit `r[`wamount`r]");
  
-             return;
+             return true;
            }
  
            showBankDeposit(sender, bank, name, amount.doubleValue());
-           return;
+           return true;
          }
  
          if (Misc.is(split[1], new String[] { "withdraw", "-w" })) {
            if ((!iConomy.hasPermissions(sender, "iConomy.bank.withdraw")) && (isPlayer)) {
-             return;
+             return true;
            }
  
            Double amount = Double.valueOf(0.0D);
@@ -1096,7 +1097,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  
            if ((bank == null) || (bank.isEmpty())) {
              Messaging.send(this.Template.color("error.bank.account.none"));
-             return;
+             return true;
            }
            try
            {
@@ -1109,18 +1110,18 @@ import org.bukkit.event.player.PlayerJoinEvent;
              Messaging.send("`rInvalid amount` `f" + amount);
              Messaging.send("`rUsage: `w/bank `r[`wbank-name`r] `Rdeposit `r[`wamount`r]");
  
-             return;
+             return true;
            }
  
            showBankWithdrawal(sender, bank, name, amount.doubleValue());
-           return;
+           return true;
          }
  
-         return;
+         return true;
        case 4:
          if (Misc.is(split[1], new String[] { "send", "->" })) {
            if ((!iConomy.hasPermissions(sender, "iConomy.bank.transfer")) || (!isPlayer)) {
-             return;
+             return true;
            }
  
            String name = "";
@@ -1129,7 +1130,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
            if (iConomy.hasAccount(split[2])) {
              name = split[2];
            } else {
-             Messaging.send(this.Template.parse("error.account", new String[] { "+name,+n" }, new String[] { split[2] })); return;
+             Messaging.send(this.Template.parse("error.account", new String[] { "+name,+n" }, new String[] { split[2] })); return true;
            }
            try
            {
@@ -1140,16 +1141,16 @@ import org.bukkit.event.player.PlayerJoinEvent;
            }
            catch (NumberFormatException ex) {
              Messaging.send("&cInvalid amount: &f" + amount);
-             Messaging.send("&cUsage: `w/bank `Rsend `r[`waccount`r] `r[`wamount`r]"); return;
+             Messaging.send("&cUsage: `w/bank `Rsend `r[`waccount`r] `r[`wamount`r]"); return true;
            }
  
            showBankTransaction(sender, player.getName(), name, amount);
-           return;
+           return true;
          }
  
          if (Misc.is(split[2], new String[] { "deposit", "-d" })) {
            if ((!iConomy.hasPermissions(sender, "iConomy.bank.deposit")) && (isPlayer)) {
-             return;
+             return true;
            }
  
            Double amount = Double.valueOf(0.0D);
@@ -1166,16 +1167,16 @@ import org.bukkit.event.player.PlayerJoinEvent;
              Messaging.send("`rInvalid amount` `f" + amount);
              Messaging.send("`rUsage: `w/bank `r[`wbank-name`r] `Rdeposit `r[`wamount`r]");
  
-             return;
+             return true;
            }
  
            showBankDeposit(sender, bank, name, amount.doubleValue());
-           return;
+           return true;
          }
  
          if (Misc.is(split[2], new String[] { "withdraw", "-w" })) {
            if ((!iConomy.hasPermissions(sender, "iConomy.bank.withdraw")) && (isPlayer)) {
-             return;
+             return true;
            }
  
            Double amount = Double.valueOf(0.0D);
@@ -1192,16 +1193,16 @@ import org.bukkit.event.player.PlayerJoinEvent;
              Messaging.send("`rInvalid amount` `f" + amount);
              Messaging.send("`rUsage: `w/bank `r[`wbank-name`r] `Rdeposit `r[`wamount`r]");
  
-             return;
+             return true;
            }
  
            showBankWithdrawal(sender, bank, name, amount.doubleValue());
-           return;
+           return true;
          }
  
          if ((!Misc.is(split[1], new String[] { "main", "-m" })) || (!Constants.BankingMultiple)) break;
          if ((!iConomy.hasPermissions(sender, "iConomy.bank.main.change")) && (isPlayer)) {
-           return;
+           return true;
          }
  
          if (Misc.is(split[2], new String[] { "set" })) {
@@ -1212,12 +1213,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
  
            if (bank == null) {
              Messaging.send(this.Template.parse("error.bank.doesnt", new String[] { "+bank,+name,+b,+n" }, new String[] { split[3] }));
-             return;
+             return true;
            }
  
            if (!bank.hasAccount(name)) {
              Messaging.send(this.Template.parse("error.bank.account.doesnt", new String[] { "+name,+n" }, new String[] { name }));
-             return;
+             return true;
            }
  
            account.setMainBank(bank.getId());
@@ -1227,11 +1228,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
            Messaging.send("`r  set");
          }
  
-         return;
+         return true;
        case 5:
          if (Misc.is(split[2], new String[] { "set", "-s" })) {
            if ((!iConomy.hasPermissions(sender, "iConomy.bank.admin.set")) && (isPlayer)) {
-             return;
+             return true;
            }
  
            if (Misc.is(split[3], new String[] { "name", "initial", "major", "minor", "fee" })) {
@@ -1241,12 +1242,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
              Messaging.send("`r  name`R, `rinitial`R, `rmajor`R, `rminor`R, `rfee");
            }
  
-           return;
+           return true;
          }
  
          if (Misc.is(split[2], new String[] { "send", "->" })) {
            if ((!iConomy.hasPermissions(sender, "iConomy.bank.transfer.multiple")) || (!isPlayer)) {
-             return;
+             return true;
            }
  
            String name = "";
@@ -1259,7 +1260,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
              tBank = iConomy.getAccount(name).getMainBankAccount().getBankName();
            } else {
              Messaging.send(this.Template.parse("error.account", new String[] { "+name,+n" }, new String[] { split[3] }));
-             return;
+             return true;
            }
            try
            {
@@ -1271,17 +1272,17 @@ import org.bukkit.event.player.PlayerJoinEvent;
            catch (NumberFormatException ex) {
              Messaging.send("&cInvalid amount: &f" + amount);
              Messaging.send("&cUsage: `w/bank`r[`wfrom-bank`r] `Rsend `r[`wto-account`r] `r[`wamount`r]");
-             return;
+             return true;
            }
  
            showBankTransfer(sender, player.getName(), bank, tBank, name, amount);
-           return;
+           return true;
          }
  
        case 6:
          if (Misc.is(split[2], new String[] { "send", "->" })) {
            if ((!iConomy.hasPermissions(sender, "iConomy.bank.transfer.multiple")) || (!isPlayer)) {
-             return;
+             return true;
            }
  
            String name = "";
@@ -1299,11 +1300,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
            catch (NumberFormatException ex) {
              Messaging.send("&cInvalid amount: &f" + amount);
              Messaging.send("&cUsage: `w/bank`r[`wfrom-bank`r] `Rsend `r[`wto-bank`r] `r[`wto-account`r] `r[`wamount`r]");
-             return;
+             return true;
            }
  
            showBankTransfer(sender, player.getName(), bank, tBank, name, amount);
-           return;
+           return true;
          }
        }
      }
@@ -1317,50 +1318,50 @@ import org.bukkit.event.player.PlayerJoinEvent;
            Messaging.send("`RCannot show balance without organism.");
          }
  
-         return;
+         return true;
        case 2:
          if (Misc.is(split[1], new String[] { "rank", "-r" })) {
            if ((!iConomy.hasPermissions(sender, "iConomy.rank")) || (!isPlayer)) {
-             return;
+             return true;
            }
  
            showRank(player, player.getName());
-           return;
+           return true;
          }
  
          if (Misc.is(split[1], new String[] { "top", "-t" })) {
            if (!iConomy.hasPermissions(player, "iConomy.list")) {
-             return;
+             return true;
            }
  
            showTop(sender, 5);
-           return;
+           return true;
          }
  
          if (Misc.is(split[1], new String[] { "empty", "-e" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.admin.empty")) {
-             return;
+             return true;
            }
  
            iConomy.Accounts.emptyDatabase();
  
            Messaging.send(this.Template.color("accounts.empty"));
-           return;
+           return true;
          }
  
          if (Misc.is(split[1], new String[] { "purge", "-pf" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.admin.purge")) {
-             return;
+             return true;
            }
  
            iConomy.Accounts.purge();
            Messaging.send(this.Template.color("accounts.purge"));
-           return;
+           return true;
          }
  
          if (Misc.is(split[1], new String[] { "stats", "-s" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.admin.stats")) {
-             return;
+             return true;
            }
  
            Collection<Double> accountHoldings = iConomy.Accounts.values();
@@ -1398,15 +1399,15 @@ import org.bukkit.event.player.PlayerJoinEvent;
              Messaging.send(this.Template.parse("statistics.bank.accounts", new String[] { "+currency,+c", "+amount,+accounts,+a" }, new Object[] { Constants.Major.get(1), Integer.valueOf(bankAccounts) }));
            }
  
-           return;
+           return true;
          }
  
          if (Misc.is(split[1], new String[] { "help", "?", "grant", "-g", "reset", "-x", "set", "-s", "pay", "-p", "create", "-c", "remove", "-v", "hide", "-h" }))
          {
-           getMoneyHelp(player); return;
+           getMoneyHelp(player); return true;
          }
          if (!iConomy.hasPermissions(sender, "iConomy.access")) {
-           return;
+           return true;
          }
  
          Player online = iConomy.getBukkitServer().getPlayer(split[1]);
@@ -1421,11 +1422,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
            Messaging.send(this.Template.parse("error.account", new String[] { "+name,+n" }, new String[] { split[1] }));
          }
  
-         return;
+         return true;
        case 3:
          if (Misc.is(split[1], new String[] { "rank", "-r" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.rank")) {
-             return;
+             return true;
            }
  
            if (iConomy.hasAccount(split[2]))
@@ -1434,12 +1435,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
              Messaging.send(this.Template.parse("error.account", new String[] { "+name,+n" }, new String[] { split[2] }));
            }
  
-           return;
+           return true;
          }
  
          if (Misc.is(split[1], new String[] { "top", "-t" })) {
            if (!iConomy.hasPermissions(player, "iConomy.list")) {
-             return;
+             return true;
            }
            try
            {
@@ -1449,12 +1450,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
              showTop(sender, 5);
            }
  
-           return;
+           return true;
          }
  
          if (Misc.is(split[1], new String[] { "create", "-c" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.admin.account.create")) {
-             return;
+             return true;
            }
  
            if (!iConomy.hasAccount(split[2]))
@@ -1463,12 +1464,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
              Messaging.send(this.Template.parse("error.exists", new String[] { "+name,+n" }, new String[] { split[2] }));
            }
  
-           return;
+           return true;
          }
  
          if (Misc.is(split[1], new String[] { "remove", "-v" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.admin.account.remove")) {
-             return;
+             return true;
            }
  
            if (iConomy.hasAccount(split[2]))
@@ -1477,12 +1478,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
              Messaging.send(this.Template.parse("error.account", new String[] { "+name,+n" }, new String[] { split[2] }));
            }
  
-           return;
+           return true;
          }
  
          if (!Misc.is(split[1], new String[] { "reset", "-x" })) break;
          if (!iConomy.hasPermissions(sender, "iConomy.admin.reset")) {
-           return;
+           return true;
          }
  
          if (iConomy.hasAccount(split[2])) {
@@ -1495,11 +1496,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
            Messaging.send(this.Template.parse("error.account", new String[] { "+name,+n" }, new String[] { split[2] }));
          }
  
-         return;
+         return true;
        case 4:
          if (Misc.is(split[1], new String[] { "pay", "-p" })) {
            if ((!iConomy.hasPermissions(sender, "iConomy.payment")) || (!isPlayer)) {
-             return;
+             return true;
            }
  
            String name = "";
@@ -1508,7 +1509,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
            if (iConomy.hasAccount(split[2])) {
              name = split[2];
            } else {
-             Messaging.send(this.Template.parse("error.account", new String[] { "+name,+n" }, new String[] { split[2] })); return;
+             Messaging.send(this.Template.parse("error.account", new String[] { "+name,+n" }, new String[] { split[2] })); return true;
            }
            try
            {
@@ -1519,16 +1520,16 @@ import org.bukkit.event.player.PlayerJoinEvent;
            }
            catch (NumberFormatException ex) {
              Messaging.send("&cInvalid amount: &f" + amount);
-             Messaging.send("&cUsage: &f/money &c[&f-p&c|&fpay&c] <&fplayer&c> &c<&famount&c>"); return;
+             Messaging.send("&cUsage: &f/money &c[&f-p&c|&fpay&c] <&fplayer&c> &c<&famount&c>"); return true;
            }
  
            showPayment(player.getName(), name, amount);
-           return;
+           return true;
          }
  
          if (Misc.is(split[1], new String[] { "grant", "-g" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.admin.grant")) {
-             return;
+             return true;
            }
  
            ArrayList<String> accounts = new ArrayList<String>();
@@ -1538,7 +1539,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
            if (split[2].startsWith("g:")) {
              
              Messaging.send(Messaging.colorize("<rose>Sorry, this feature is disabled with superperms."));
-             return;
+             return true;
 
            }
            else
@@ -1555,7 +1556,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
              if (iConomy.hasAccount(name)) {
                accounts.add(name);
              } else {
-               Messaging.send(this.Template.parse("error.account", new String[] { "+name,+n" }, new String[] { name })); return;
+               Messaging.send(this.Template.parse("error.account", new String[] { "+name,+n" }, new String[] { name })); return true;
              }
            }
            try
@@ -1563,23 +1564,23 @@ import org.bukkit.event.player.PlayerJoinEvent;
              amount = Double.parseDouble(split[3]);
            } catch (NumberFormatException e) {
              Messaging.send("&cInvalid amount: &f" + split[3]);
-             Messaging.send("&cUsage: &f/money &c[&f-g&c|&fgrant&c] <&fplayer&c> (&f-&c)&c<&famount&c>"); return;
+             Messaging.send("&cUsage: &f/money &c[&f-g&c|&fgrant&c] <&fplayer&c> (&f-&c)&c<&famount&c>"); return true;
            }
  
            if ((accounts.size() < 1) || (accounts.isEmpty())) {
-             Messaging.send(this.Template.color("<rose>Grant Query returned 0 accounts to alter.")); return;
+             Messaging.send(this.Template.color("<rose>Grant Query returned 0 accounts to alter.")); return true;
            }
  
            for (String name : accounts) {
              showGrant(name, player, amount, console);
            }
  
-           return;
+           return true;
          }
  
          if (Misc.is(split[1], new String[] { "hide", "-h" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.admin.hide")) {
-             return;
+             return true;
            }
  
            String name = "";
@@ -1593,7 +1594,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
            }
  
            if (!iConomy.hasAccount(name)) {
-             Messaging.send(this.Template.parse("error.account", new String[] { "+name,+n" }, new String[] { split[2] })); return;
+             Messaging.send(this.Template.parse("error.account", new String[] { "+name,+n" }, new String[] { split[2] })); return true;
            }
  
            if (Misc.is(split[3], new String[] { "true", "t", "-t", "yes", "da", "-d" })) {
@@ -1606,12 +1607,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
              Messaging.send(this.Template.parse("accounts.status", new String[] { "+status,+s" }, new String[] { hidden ? "hidden" : "visible" }));
            }
  
-           return;
+           return true;
          }
  
          if (!Misc.is(split[1], new String[] { "set", "-s" })) break;
          if (!iConomy.hasPermissions(player, "iConomy.admin.set")) {
-           return;
+           return true;
          }
  
          String name = "";
@@ -1626,14 +1627,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
          }
  
          if (!iConomy.hasAccount(name)) {
-           Messaging.send(this.Template.parse("error.account", new String[] { "+name,+n" }, new String[] { split[2] })); return;
+           Messaging.send(this.Template.parse("error.account", new String[] { "+name,+n" }, new String[] { split[2] })); return true;
          }
          try
          {
            amount = Double.parseDouble(split[3]);
          } catch (NumberFormatException e) {
            Messaging.send("&cInvalid amount: &f" + split[3]);
-           Messaging.send("&cUsage: &f/money &c[&f-g&c|&fgrant&c] <&fplayer&c> (&f-&c)&c<&famount&c>"); return;
+           Messaging.send("&cUsage: &f/money &c[&f-g&c|&fgrant&c] <&fplayer&c> (&f-&c)&c<&famount&c>"); return true;
          }
  
          if (isPlayer)
@@ -1642,10 +1643,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
            showSet(name, null, amount, true);
          }
  
-         return;
+         return true;
        }
  
        getMoneyHelp(player);
      }
+     
+     return false;
    }
  }
