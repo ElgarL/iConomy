@@ -28,6 +28,7 @@ import java.util.Timer;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -381,8 +382,10 @@ public class iConomy extends JavaPlugin
 
   public static boolean hasPermissions(CommandSender sender, String node)
   {
-    if ((sender instanceof Player)) {
+    if (sender instanceof Player) {
     	return ((Player)sender).hasPermission(node);
+    } else if (sender instanceof ConsoleCommandSender) {
+    	return true;
     }
   	return false;
   }
