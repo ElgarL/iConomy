@@ -383,6 +383,8 @@ public class iConomy extends JavaPlugin
   {
     if ((sender instanceof Player)) {
     	return ((Player)sender).hasPermission(node);
+    } else if (sender instanceof CommandConsoleSender) {
+      return true;
     }
   	return false;
   }
