@@ -1322,7 +1322,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
        case 2:
          if (Misc.is(split[1], new String[] { "rank", "-r" })) {
            if ((!iConomy.hasPermissions(sender, "iConomy.rank")) || (!isPlayer)) {
-             return true;
+             return false;
            }
  
            showRank(player, player.getName());
@@ -1340,7 +1340,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  
          if (Misc.is(split[1], new String[] { "empty", "-e" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.admin.empty")) {
-             return true;
+             return false;
            }
  
            iConomy.Accounts.emptyDatabase();
@@ -1351,7 +1351,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  
          if (Misc.is(split[1], new String[] { "purge", "-pf" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.admin.purge")) {
-             return true;
+             return false;
            }
  
            iConomy.Accounts.purge();
@@ -1361,7 +1361,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  
          if (Misc.is(split[1], new String[] { "stats", "-s" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.admin.stats")) {
-             return true;
+             return false;
            }
  
            Collection<Double> accountHoldings = iConomy.Accounts.values();
@@ -1407,7 +1407,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
            getMoneyHelp(player); return true;
          }
          if (!iConomy.hasPermissions(sender, "iConomy.access")) {
-           return true;
+           return false;
          }
  
          Player online = iConomy.getBukkitServer().getPlayer(split[1]);
@@ -1426,7 +1426,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
        case 3:
          if (Misc.is(split[1], new String[] { "rank", "-r" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.rank")) {
-             return true;
+             return false;
            }
  
            if (iConomy.hasAccount(split[2]))
@@ -1440,7 +1440,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  
          if (Misc.is(split[1], new String[] { "top", "-t" })) {
            if (!iConomy.hasPermissions(player, "iConomy.list")) {
-             return true;
+             return false;
            }
            try
            {
@@ -1455,7 +1455,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  
          if (Misc.is(split[1], new String[] { "create", "-c" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.admin.account.create")) {
-             return true;
+             return false;
            }
  
            if (!iConomy.hasAccount(split[2]))
@@ -1469,7 +1469,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  
          if (Misc.is(split[1], new String[] { "remove", "-v" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.admin.account.remove")) {
-             return true;
+             return false;
            }
  
            if (iConomy.hasAccount(split[2]))
@@ -1483,7 +1483,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  
          if (!Misc.is(split[1], new String[] { "reset", "-x" })) break;
          if (!iConomy.hasPermissions(sender, "iConomy.admin.reset")) {
-           return true;
+           return false;
          }
  
          if (iConomy.hasAccount(split[2])) {
@@ -1500,7 +1500,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
        case 4:
          if (Misc.is(split[1], new String[] { "pay", "-p" })) {
            if ((!iConomy.hasPermissions(sender, "iConomy.payment")) || (!isPlayer)) {
-             return true;
+             return false;
            }
  
            String name = "";
@@ -1529,7 +1529,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  
          if (Misc.is(split[1], new String[] { "grant", "-g" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.admin.grant")) {
-             return true;
+             return false;
            }
  
            ArrayList<String> accounts = new ArrayList<String>();
@@ -1580,7 +1580,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  
          if (Misc.is(split[1], new String[] { "hide", "-h" })) {
            if (!iConomy.hasPermissions(sender, "iConomy.admin.hide")) {
-             return true;
+             return false;
            }
  
            String name = "";
@@ -1612,7 +1612,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  
          if (!Misc.is(split[1], new String[] { "set", "-s" })) break;
          if (!iConomy.hasPermissions(player, "iConomy.admin.set")) {
-           return true;
+           return false;
          }
  
          String name = "";

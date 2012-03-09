@@ -384,7 +384,7 @@ public class iConomy extends JavaPlugin
     if ((sender instanceof Player)) {
     	return ((Player)sender).hasPermission(node);
     }
-  	return false;
+  	return true;
   }
 
   public static Server getBukkitServer()
