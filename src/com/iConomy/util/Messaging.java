@@ -27,7 +27,7 @@ public class Messaging
   public static String parse(String original)
   {
     original = colorize(original);
-    return original.replaceAll("(&([a-z0-9]))", "ยง$2").replace("&&", "&");
+    return original.replaceAll("(&([a-z0-9]))", "ง$2").replace("&&", "&");
   }
 
   public static String colorize(String original)
@@ -48,7 +48,7 @@ public class Messaging
     original = original.replace("`s", ChatColor.GRAY.toString());
     original = original.replace("`S", ChatColor.DARK_GRAY.toString());
     original = original.replace("`w", ChatColor.WHITE.toString());
-    return original.replace("<black>", "ยง0").replace("<navy>", "ยง1").replace("<green>", "ยง2").replace("<teal>", "ยง3").replace("<red>", "ยง4").replace("<purple>", "ยง5").replace("<gold>", "ยง6").replace("<silver>", "ยง7").replace("<gray>", "ยง8").replace("<blue>", "ยง9").replace("<lime>", "ยงa").replace("<aqua>", "ยงb").replace("<rose>", "ยงc").replace("<pink>", "ยงd").replace("<yellow>", "ยงe").replace("<white>", "ยงf");
+    return original.replace("<black>", "ง0").replace("<navy>", "ง1").replace("<green>", "ง2").replace("<teal>", "ง3").replace("<red>", "ง4").replace("<purple>", "ง5").replace("<gold>", "ง6").replace("<silver>", "ง7").replace("<gray>", "ง8").replace("<blue>", "ง9").replace("<lime>", "งa").replace("<aqua>", "งb").replace("<rose>", "งc").replace("<pink>", "งd").replace("<yellow>", "งe").replace("<white>", "งf");
   }
 
   public static String bracketize(String message)
