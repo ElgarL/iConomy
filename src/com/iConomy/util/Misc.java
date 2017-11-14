@@ -1,7 +1,10 @@
 package com.iConomy.util;
 
 import com.iConomy.iConomy;
+
+import java.util.Collection;
 import java.util.List;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -96,7 +99,7 @@ public class Misc
 
   public static Player playerMatch(String name)
   {
-    Player[] online = iConomy.getBukkitServer().getOnlinePlayers();
+    Collection<? extends Player> online = iConomy.getBukkitServer().getOnlinePlayers();
     Player lastPlayer = null;
 
     for (Player player : online) {

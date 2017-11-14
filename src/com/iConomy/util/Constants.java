@@ -10,11 +10,11 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
  
 public class Constants {
-	public static final String Codename = "Eruanna";
+	public static final String Codename = "Towny Edition";
 	public static File Configuration;
 	public static String Plugin_Directory;
-	public static String H2_Jar_Location = "http://mirror.nexua.org/Dependencies/h2.jar";
-	public static String MySQL_Jar_Location = "http://mirror.anigaiku.com/Dependencies/mysql-connector-java-bin.jar";
+	public static String H2_Jar_Location = "http://palmergames.com/file-repo/iConomy/libs/h2.jar";
+	public static String MySQL_Jar_Location = "http://palmergames.com/file-repo/iConomy/libs/mysql-connector-java-bin.jar";
 
 	public static List<String> Major = new LinkedList<String>();
 	public static List<String> Minor = new LinkedList<String>();

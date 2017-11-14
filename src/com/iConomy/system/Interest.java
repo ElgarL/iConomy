@@ -4,6 +4,7 @@ import com.iConomy.iConomy;
 import com.iConomy.util.Constants;
 import com.iConomy.util.Messaging;
 import com.iConomy.util.Template;
+
 import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,9 +12,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimerTask;
+
 import org.bukkit.entity.Player;
 
 public class Interest extends TimerTask
@@ -35,7 +38,7 @@ public class Interest extends TimerTask
     HashMap<String, Integer> bankPlayers = new HashMap<String, Integer>();
 
     if (Constants.InterestOnline) {
-      Player[] player = iConomy.getBukkitServer().getOnlinePlayers();
+      Collection<? extends Player> player = iConomy.getBukkitServer().getOnlinePlayers();
 
       if ((Constants.InterestType.equalsIgnoreCase("players")) || (!Constants.Banking)) {
         for (Player p : player)

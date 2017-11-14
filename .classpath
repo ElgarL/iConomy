@@ -4,5 +4,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="../lib/bukkit.jar"/>
 	<classpathentry kind="lib" path="../lib/h2.jar"/>
+	<classpathentry kind="lib" path="../lib/VaultAPI-1.6.jar"/>
+	<classpathentry kind="lib" path="../lib/Vault.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Rogan/git/lib/Towny.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

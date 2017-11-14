@@ -9,6 +9,7 @@ import com.iConomy.util.Constants;
 import com.iConomy.util.Messaging;
 import com.iConomy.util.Misc;
 import com.iConomy.util.Template;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,61 +39,61 @@ import org.bukkit.event.player.PlayerJoinEvent;
  
    private void getMoneyHelp(CommandSender player)
    {
-     Messaging.send("&e ");
-     Messaging.send("&f iConomy (&cEruanna&f)");
-     Messaging.send("&e ");
-     Messaging.send("&f [] Required, () Optional");
+     Messaging.send("`y ");
+     Messaging.send("`w iConomy (`r"+ Constants.Codename +"`w)");
+     Messaging.send("`y ");
+     Messaging.send("`w [] Required, () Optional");
      Messaging.send(" ");
-     Messaging.send("`G  /money &e Check your balance");
-     Messaging.send("`G  /money `g? &e For help & Information");
+     Messaging.send("`G  /money `y Check your balance");
+     Messaging.send("`G  /money `g? `y For help & Information");
  
      if (iConomy.hasPermissions(player, "iConomy.rank")) {
-       Messaging.send("`G  /money `grank `G(`wplayer`G) &e Rank on the topcharts.   ");
+       Messaging.send("`G  /money `grank `G(`wplayer`G) `y Rank on the topcharts.   ");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.list")) {
-       Messaging.send("`G  /money `gtop `G(`wamount`G) &e Richest players listing.  ");
+       Messaging.send("`G  /money `gtop `G(`wamount`G) `y Richest players listing.  ");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.payment")) {
-       Messaging.send("`G  /money `gpay `G[`wplayer`G] [`wamount`G] &e Send money to a player.");
+       Messaging.send("`G  /money `gpay `G[`wplayer`G] [`wamount`G] `y Send money to a player.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.admin.grant")) {
-       Messaging.send("`G  /money `ggrant `G[`wplayer`G] [`wamount`G] &e Give money.");
-       Messaging.send("`G  /money `ggrant `G[`wplayer`G] -[`wamount`G] &e Take money.");
+       Messaging.send("`G  /money `ggrant `G[`wplayer`G] [`wamount`G] `y Give money.");
+       Messaging.send("`G  /money `ggrant `G[`wplayer`G] -[`wamount`G] `y Take money.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.admin.set")) {
-       Messaging.send("`G  /money `gset `G[`wplayer`G] [`wamount`G] &e Sets a players balance.");
+       Messaging.send("`G  /money `gset `G[`wplayer`G] [`wamount`G] `y Sets a players balance.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.admin.hide")) {
-       Messaging.send("`G  /money `ghide `G[`wplayer`G] `wtrue`G/`wfalse &e Hide or show an account.");
+       Messaging.send("`G  /money `ghide `G[`wplayer`G] `wtrue`G/`wfalse `y Hide or show an account.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.admin.account.create")) {
-       Messaging.send("`G  /money `gcreate `G[`wplayer`G] &e Create player account.");
+       Messaging.send("`G  /money `gcreate `G[`wplayer`G] `y Create player account.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.admin.account.remove")) {
-       Messaging.send("`G  /money `gremove `G[`wplayer`G] &e Remove player account.");
+       Messaging.send("`G  /money `gremove `G[`wplayer`G] `y Remove player account.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.admin.reset")) {
-       Messaging.send("`G  /money `greset `G[`wplayer`G] &e Reset player account.");
+       Messaging.send("`G  /money `greset `G[`wplayer`G] `y Reset player account.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.admin.purge")) {
-       Messaging.send("`G  /money `gpurge &e Remove all accounts with inital holdings.");
+       Messaging.send("`G  /money `gpurge `y Remove all accounts with inital holdings.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.admin.empty")) {
-       Messaging.send("`G  /money `gempty &e Empties database.");
+       Messaging.send("`G  /money `gempty `y Empties database.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.admin.stats")) {
-       Messaging.send("`G  /money `gstats &e Check all economic stats.");
+       Messaging.send("`G  /money `gstats `y Check all economic stats.");
      }
  
      Messaging.send(" ");
@@ -100,40 +101,40 @@ import org.bukkit.event.player.PlayerJoinEvent;
  
    private void getBankHelp(CommandSender player)
    {
-     Messaging.send("&e ");
-     Messaging.send("&f iConomy (&cEruanna&f)");
-     Messaging.send("&e ");
-     Messaging.send("&f [] Required, () Optional");
+     Messaging.send("`y ");
+     Messaging.send("`w iConomy (`r"+ Constants.Codename +"`w)");
+     Messaging.send("`y ");
+     Messaging.send("`w [] Required, () Optional");
      Messaging.send(" ");
-     Messaging.send("`G  /bank &e Check your bank accounts");
-     Messaging.send("`G  /bank `g? &e For help & Information");
+     Messaging.send("`G  /bank `y Check your bank accounts");
+     Messaging.send("`G  /bank `g? `y For help & Information");
  
      if (iConomy.hasPermissions(player, "iConomy.bank.list")) {
-       Messaging.send("`G  /bank `glist `G(`w#`G) &e Paged list of banks.");
+       Messaging.send("`G  /bank `glist `G(`w#`G) `y Paged list of banks.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.bank.main")) {
-       Messaging.send("`G  /bank `gmain &e View your main bank.");
+       Messaging.send("`G  /bank `gmain `y View your main bank.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.bank.main.view")) {
-       Messaging.send("`G  /bank `gmain `G[`waccount`G] &e View an accounts main bank.");
+       Messaging.send("`G  /bank `gmain `G[`waccount`G] `y View an accounts main bank.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.bank.main.set")) {
-       Messaging.send("`G  /bank `gmain set `G[`wbank`G] &e Set your main bank.");
+       Messaging.send("`G  /bank `gmain set `G[`wbank`G] `y Set your main bank.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.bank.join")) {
-       Messaging.send("`G  /bank `gjoin `G[`wbank`G] &e Create an account with a bank.");
+       Messaging.send("`G  /bank `gjoin `G[`wbank`G] `y Create an account with a bank.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.bank.leave")) {
-       Messaging.send("`G  /bank `gleave `G[`wbank`G] &e Close an account with a bank.");
+       Messaging.send("`G  /bank `gleave `G[`wbank`G] `y Close an account with a bank.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.bank.transfer")) {
-       Messaging.send("`G  /bank `gsend `G[`wto`G] `r[`wamount`r] &e Send money to another players bank.");
+       Messaging.send("`G  /bank `gsend `G[`wto`G] `r[`wamount`r] `y Send money to another players bank.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.bank.transfer.multiple")) {
@@ -145,15 +146,15 @@ import org.bukkit.event.player.PlayerJoinEvent;
      }
  
      if (iConomy.hasPermissions(player, "iConomy.admin.bank.create")) {
-       Messaging.send("`G  /bank `gcreate `G[`wbank`G] &e Create a bank.");
+       Messaging.send("`G  /bank `gcreate `G[`wbank`G] `y Create a bank.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.admin.bank.remove")) {
-       Messaging.send("`G  /bank `gremove `G[`wbank`G] &e Close a bank.");
+       Messaging.send("`G  /bank `gremove `G[`wbank`G] `y Close a bank.");
      }
  
      if (iConomy.hasPermissions(player, "iConomy.admin.bank.set")) {
-       Messaging.send("`G  /bank `G[`wbank`G] `gset `G[`wkey`G] `G[`wvalue`G] &e Create a bank.");
+       Messaging.send("`G  /bank `G[`wbank`G] `gset `G[`wkey`G] `G[`wvalue`G] `y Create a bank.");
        Messaging.send("`y   Keys: `Yname`y, `Yinitial`y, `Ymajor`y, `Yminor`y, `Yfee");
      }
  
@@ -1140,8 +1141,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
                throw new NumberFormatException();
            }
            catch (NumberFormatException ex) {
-             Messaging.send("&cInvalid amount: &f" + amount);
-             Messaging.send("&cUsage: `w/bank `Rsend `r[`waccount`r] `r[`wamount`r]"); return true;
+             Messaging.send("`rInvalid amount: `w" + amount);
+             Messaging.send("`rUsage: `w/bank `Rsend `r[`waccount`r] `r[`wamount`r]"); return true;
            }
  
            showBankTransaction(sender, player.getName(), name, amount);
@@ -1270,8 +1271,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
                throw new NumberFormatException();
            }
            catch (NumberFormatException ex) {
-             Messaging.send("&cInvalid amount: &f" + amount);
-             Messaging.send("&cUsage: `w/bank`r[`wfrom-bank`r] `Rsend `r[`wto-account`r] `r[`wamount`r]");
+             Messaging.send("`rInvalid amount: `w" + amount);
+             Messaging.send("`rUsage: `w/bank`r[`wfrom-bank`r] `Rsend `r[`wto-account`r] `r[`wamount`r]");
              return true;
            }
  
@@ -1298,8 +1299,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
                throw new NumberFormatException();
            }
            catch (NumberFormatException ex) {
-             Messaging.send("&cInvalid amount: &f" + amount);
-             Messaging.send("&cUsage: `w/bank`r[`wfrom-bank`r] `Rsend `r[`wto-bank`r] `r[`wto-account`r] `r[`wamount`r]");
+             Messaging.send("`rInvalid amount: `w" + amount);
+             Messaging.send("`rUsage: `w/bank`r[`wfrom-bank`r] `Rsend `r[`wto-bank`r] `r[`wto-account`r] `r[`wamount`r]");
              return true;
            }
  
@@ -1519,8 +1520,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
                throw new NumberFormatException();
            }
            catch (NumberFormatException ex) {
-             Messaging.send("&cInvalid amount: &f" + amount);
-             Messaging.send("&cUsage: &f/money &c[&f-p&c|&fpay&c] <&fplayer&c> &c<&famount&c>"); return true;
+             Messaging.send("`rInvalid amount: `w" + amount);
+             Messaging.send("`rUsage: `w/money `r[`w-p`r|`wpay`r] <`wplayer`r> `r<`wamount`r>"); return true;
            }
  
            showPayment(player.getName(), name, amount);
@@ -1563,8 +1564,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
            {
              amount = Double.parseDouble(split[3]);
            } catch (NumberFormatException e) {
-             Messaging.send("&cInvalid amount: &f" + split[3]);
-             Messaging.send("&cUsage: &f/money &c[&f-g&c|&fgrant&c] <&fplayer&c> (&f-&c)&c<&famount&c>"); return true;
+             Messaging.send("`rInvalid amount: `w" + split[3]);
+             Messaging.send("`rUsage: `w/money `r[`w-g`r|`wgrant`r] <`wplayer`r> (`w-`r)`r<`wamount`r>"); return true;
            }
  
            if ((accounts.size() < 1) || (accounts.isEmpty())) {
@@ -1633,8 +1634,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
          {
            amount = Double.parseDouble(split[3]);
          } catch (NumberFormatException e) {
-           Messaging.send("&cInvalid amount: &f" + split[3]);
-           Messaging.send("&cUsage: &f/money &c[&f-g&c|&fgrant&c] <&fplayer&c> (&f-&c)&c<&famount&c>"); return true;
+           Messaging.send("`rInvalid amount: `w" + split[3]);
+           Messaging.send("`rUsage: `w/money `r[`w-g`r|`wgrant`r] <`wplayer`r> (`w-`r)`r<`wamount`r>"); return true;
          }
  
          if (isPlayer)

@@ -1,7 +1,8 @@
 name: iConomy
 main: com.iConomy.iConomy
-version: 5.01
-authors: [Nijikokun,ElgarL]
+version: 5.05
+authors: [Nijikokun,ElgarL,LlmDl]
+softdepend: [Vault, Towny]
 load: startup
 commands:
     money:
@@ -9,7 +10,10 @@ commands:
         usage: /money
     bank:
         description: Control, list, create, and do various bank features.
-        usage: /bank
+        usage: /bank    
+    icoimport:
+        description: Imports an Essentials Economy into iConomy.
+        usage: /icoimport
         
 permissions:
     iConomy.admin:
