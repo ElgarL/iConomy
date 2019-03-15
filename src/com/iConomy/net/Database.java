@@ -28,7 +28,7 @@ public class Database
       this.password = "sa";
     } else if (Constants.DatabaseType.equalsIgnoreCase("mysql")) {
       this.driver = "com.mysql.jdbc.Driver";
-      this.dsn = ("jdbc:mysql://" + Constants.SQLHostname + ":" + Constants.SQLPort + "/" + Constants.SQLDatabase);
+      this.dsn = ("jdbc:mysql://" + Constants.SQLHostname + ":" + Constants.SQLPort + "/" + Constants.SQLDatabase + "?useSSL=" + Constants.SQLUseSSL);
       this.username = Constants.SQLUsername;
       this.password = Constants.SQLPassword;
     }
