@@ -49,6 +49,7 @@ public class Constants {
 	public static String SQLPort = "3306";
 	public static String SQLUsername = "root";
 	public static String SQLPassword = "";
+	public static boolean SQLUseSSL = false;
 
 	public static String SQLDatabase = "minecraft";
 	public static String SQLTable = "iConomy";
@@ -126,6 +127,8 @@ public class Constants {
 					"System.Database.Settings.MySQL.Username", SQLUsername);
 			SQLPassword = config.getString(
 					"System.Database.Settings.MySQL.Password", SQLPassword);
+			SQLUseSSL = config.getBoolean(
+					"System.Database.Settings.MySQL.UseSSL", false);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
