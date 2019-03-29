@@ -6,7 +6,6 @@ import java.util.List;
 import org.bukkit.OfflinePlayer;
 
 import com.iConomy.iConomy;
-import com.iConomy.system.Account;
 import com.iConomy.system.Holdings;
 import com.iConomy.util.Constants;
 
@@ -16,7 +15,6 @@ import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 
 
 public class VaultConnector implements Economy {
-	
 	private iConomy plugin;
 	private String name;
 	
@@ -24,10 +22,15 @@ public class VaultConnector implements Economy {
 		this.plugin = plugin;
 		//Bukkit.getServer().getPluginManager().registerEvents(new EconomyServerListener(), plugin);
 	}
+	
+	@Override
+	public boolean isEnabled() {
+		return plugin != null && plugin.isEnabled();
+	}
 
 	@Override
 	public String getName() {
-		name = "iConomy " + plugin.getDescription().getVersion().toString();
+		name = "iConomy " + plugin.getDescription().getVersion();
 		return name;
 	}
 	
@@ -37,17 +40,17 @@ public class VaultConnector implements Economy {
 		if (hasAccount(playerName)) {
             return false;
         }
-        plugin.getAccount(playerName);
+        iConomy.getAccount(playerName);
         return true;
 	}
 
 	@Override
-	public boolean createPlayerAccount(OfflinePlayer arg0) {
+	public boolean createPlayerAccount(OfflinePlayer player) {
 
-		if (hasAccount(arg0.toString())) {
+		if (hasAccount(player.getName())) {
             return false;
         }
-        plugin.getAccount(arg0.getName().toString());
+        iConomy.getAccount(player.getName());
         return true;
 	}
 
@@ -57,17 +60,17 @@ public class VaultConnector implements Economy {
 		if (hasAccount(playerName)) {
             return false;
         }
-        plugin.getAccount(playerName);
+        iConomy.getAccount(playerName);
         return true;
 	}
 
 	@Override
-	public boolean createPlayerAccount(OfflinePlayer arg0, String arg1) {
+	public boolean createPlayerAccount(OfflinePlayer player, String arg1) {
 
-		if (hasAccount(arg0.getPlayer().getName())) {
+		if (hasAccount(player.getName())) {
             return false;
         }
-        plugin.getAccount(arg0.getPlayer().getName());
+        iConomy.getAccount(player.getName());
         return true;
 	}
 
@@ -98,8 +101,7 @@ public class VaultConnector implements Economy {
         EconomyResponse.ResponseType type;
         String errorMessage = null;
 
-        Account account = plugin.getAccount(playerName);
-        Holdings holdings = account.getHoldings();
+        Holdings holdings = iConomy.getAccount(playerName).getHoldings();
         holdings.add(amount);
         balance = getBalance(playerName);
         type = EconomyResponse.ResponseType.SUCCESS;
@@ -108,16 +110,15 @@ public class VaultConnector implements Economy {
 	}
 
 	@Override
-	public EconomyResponse depositPlayer(OfflinePlayer arg0, double amount) {
+	public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
 
 		double balance;
         EconomyResponse.ResponseType type;
         String errorMessage = null;
 
-        Account account = plugin.getAccount(arg0.getName());
-        Holdings holdings = account.getHoldings();
+        Holdings holdings = iConomy.getAccount(player.getName()).getHoldings();
         holdings.add(amount);
-        balance = getBalance(arg0.getName());
+        balance = getBalance(player.getName());
         type = EconomyResponse.ResponseType.SUCCESS;
 
         return new EconomyResponse(amount, balance, type, errorMessage);
@@ -130,8 +131,7 @@ public class VaultConnector implements Economy {
         EconomyResponse.ResponseType type;
         String errorMessage = null;
 
-        Account account = plugin.getAccount(playerName);
-        Holdings holdings = account.getHoldings();
+        Holdings holdings = iConomy.getAccount(playerName).getHoldings();
         holdings.add(amount);
         balance = getBalance(playerName);
         type = EconomyResponse.ResponseType.SUCCESS;
@@ -140,16 +140,15 @@ public class VaultConnector implements Economy {
 	}
 
 	@Override
-	public EconomyResponse depositPlayer(OfflinePlayer arg0, String world, double amount) {
+	public EconomyResponse depositPlayer(OfflinePlayer player, String world, double amount) {
 
 		double balance;
         EconomyResponse.ResponseType type;
         String errorMessage = null;
 
-        Account account = plugin.getAccount(arg0.getName());
-        Holdings holdings = account.getHoldings();
+        Holdings holdings = iConomy.getAccount(player.getName()).getHoldings();
         holdings.add(amount);
-        balance = getBalance(arg0.getPlayer().getName());
+        balance = getBalance(player.getName());
         type = EconomyResponse.ResponseType.SUCCESS;
 
         return new EconomyResponse(amount, balance, type, errorMessage);
@@ -158,7 +157,7 @@ public class VaultConnector implements Economy {
 	@Override
 	public String format(double amount) {
 
-		 return plugin.format(amount);
+		 return iConomy.format(amount);
 	}
 
 	@Override
@@ -170,24 +169,24 @@ public class VaultConnector implements Economy {
 	@Override
 	public double getBalance(String playerName) {
 
-		return plugin.getAccount(playerName).getHoldings().balance();
+		return iConomy.getAccount(playerName).getHoldings().balance();
 	}
 
 	@Override
-	public double getBalance(OfflinePlayer offlinePlayer) {		
-		return plugin.getAccount(offlinePlayer.getName()).getHoldings().balance();
+	public double getBalance(OfflinePlayer player) {		
+		return iConomy.getAccount(player.getName()).getHoldings().balance();
 	}
 
 	@Override
-	public double getBalance(String playerName, String arg1) {
+	public double getBalance(String playerName, String world) {
 
-		return plugin.getAccount(playerName).getHoldings().balance();
+		return iConomy.getAccount(playerName).getHoldings().balance();
 	}
 
 	@Override
-	public double getBalance(OfflinePlayer offlinePlayer, String world) {
+	public double getBalance(OfflinePlayer player, String world) {
 
-		return plugin.getAccount(offlinePlayer.getPlayer().getName()).getHoldings().balance();
+		return iConomy.getAccount(player.getName()).getHoldings().balance();
 	}
 
 	@Override
@@ -204,9 +203,9 @@ public class VaultConnector implements Economy {
     }
 
 	@Override
-	public boolean has(OfflinePlayer arg0, double amount) {
+	public boolean has(OfflinePlayer player, double amount) {
 		
-        return getBalance(arg0.getPlayer().getName()) >= amount;
+        return getBalance(player.getName()) >= amount;
         
     }
 
@@ -217,45 +216,37 @@ public class VaultConnector implements Economy {
 	}
 
 	@Override
-	public boolean has(OfflinePlayer arg0, String world, double amount) {
+	public boolean has(OfflinePlayer player, String world, double amount) {
 
-		return getBalance(arg0.getPlayer().getName()) >= amount;
+		return getBalance(player.getName()) >= amount;
 	}
 
 	@Override
 	public boolean hasAccount(String playerName) {
 
-		return plugin.hasAccount(playerName);
+		return iConomy.hasAccount(playerName);
 	}
 
 	@Override
-	public boolean hasAccount(OfflinePlayer arg0) {
+	public boolean hasAccount(OfflinePlayer player) {
 
-		return plugin.hasAccount(arg0.getName().toString());
+		return iConomy.hasAccount(player.getName());
 	}
 
 	@Override
-	public boolean hasAccount(String playerName, String arg1) {
+	public boolean hasAccount(String playerName, String worldName) {
 
-		return plugin.hasAccount(playerName);
+		return iConomy.hasAccount(playerName);
 	}
 
 	@Override
-	public boolean hasAccount(OfflinePlayer arg0, String arg1) {
-
-		return plugin.hasAccount(arg0.getPlayer().getName());
+	public boolean hasAccount(OfflinePlayer player, String worldName) {
+		return iConomy.hasAccount(player.getName());
 	}
 
 	@Override
 	public boolean hasBankSupport() {
-
 		return false;
-	}
-
-	@Override
-	public boolean isEnabled() {
-
-		return plugin != null;
 	}
 
 	@Override
@@ -265,8 +256,7 @@ public class VaultConnector implements Economy {
         EconomyResponse.ResponseType type;
         String errorMessage = null;
 
-        Account account = plugin.getAccount(playerName);
-        Holdings holdings = account.getHoldings();
+        Holdings holdings = iConomy.getAccount(playerName).getHoldings();
         if (holdings.hasEnough(amount)) {
             holdings.subtract(amount);
             balance = getBalance(playerName);
@@ -282,22 +272,21 @@ public class VaultConnector implements Economy {
 	}
 
 	@Override
-	public EconomyResponse withdrawPlayer(OfflinePlayer arg0, double amount) {
+	public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
 
 		double balance;
         EconomyResponse.ResponseType type;
         String errorMessage = null;
 
-        Account account = plugin.getAccount(arg0.getName());
-        Holdings holdings = account.getHoldings();
+        Holdings holdings = iConomy.getAccount(player.getName()).getHoldings();
         if (holdings.hasEnough(amount)) {
             holdings.subtract(amount);
-            balance = getBalance(arg0.getName());
+            balance = getBalance(player.getName());
             type = EconomyResponse.ResponseType.SUCCESS;
             return new EconomyResponse(amount, balance, type, errorMessage);
         } else {
             amount = 0;
-            balance = getBalance(arg0.getName());
+            balance = getBalance(player.getName());
             type = EconomyResponse.ResponseType.FAILURE;
             errorMessage = "Insufficient funds";
             return new EconomyResponse(amount, balance, type, errorMessage);
@@ -311,8 +300,7 @@ public class VaultConnector implements Economy {
         EconomyResponse.ResponseType type;
         String errorMessage = null;
 
-        Account account = plugin.getAccount(playerName);
-        Holdings holdings = account.getHoldings();
+        Holdings holdings = iConomy.getAccount(playerName).getHoldings();
         if (holdings.hasEnough(amount)) {
             holdings.subtract(amount);
             balance = getBalance(playerName);
@@ -328,22 +316,21 @@ public class VaultConnector implements Economy {
 	}
 
 	@Override
-	public EconomyResponse withdrawPlayer(OfflinePlayer arg0, String world, double amount) {
+	public EconomyResponse withdrawPlayer(OfflinePlayer player, String world, double amount) {
 
 		double balance;
         EconomyResponse.ResponseType type;
         String errorMessage = null;
 
-        Account account = plugin.getAccount(arg0.getPlayer().getName());
-        Holdings holdings = account.getHoldings();
+        Holdings holdings = iConomy.getAccount(player.getName()).getHoldings();
         if (holdings.hasEnough(amount)) {
             holdings.subtract(amount);
-            balance = getBalance(arg0.getPlayer().getName());
+            balance = getBalance(player.getName());
             type = EconomyResponse.ResponseType.SUCCESS;
             return new EconomyResponse(amount, balance, type, errorMessage);
         } else {
             amount = 0;
-            balance = getBalance(arg0.getPlayer().getName());
+            balance = getBalance(player.getName());
             type = EconomyResponse.ResponseType.FAILURE;
             errorMessage = "Insufficient funds";
             return new EconomyResponse(amount, balance, type, errorMessage);
