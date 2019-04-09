@@ -12,13 +12,13 @@
 
 	<repositories>
 		<repository>
-			<id>spigotmc-repo</id>
-			<url>https://hub.spigotmc.org/nexus/content/groups/public</url>
+			<id>repo-release</id>
+			<url>https://repo.craftyn.com/repository/internal/</url>
 		</repository>
 
 		<repository>
-			<id>articdive-repo</id>
-			<url>https://nexus.articdive.de/repository/maven-releases</url>
+			<id>spigotmc-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/groups/public</url>
 		</repository>
 
 		<repository>
@@ -43,9 +43,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.palmergames</groupId>
+			<groupId>com.palmergames.bukkit</groupId>
 			<artifactId>Towny</artifactId>
-			<version>0.93.0.6</version>
+			<version>0.93.0.0</version>
 			<scope>provided</scope>
 		</dependency>
 
