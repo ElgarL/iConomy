@@ -23,7 +23,7 @@ public class Downloader {
     protected String error;
 
     public void install(String location, String filename) {
-        File dest = new File("lib" + File.pathSeparator + filename);
+        File dest = new File("lib" + File.separator + filename);
 
         try {
             count = this.total = this.itemCount = this.itemTotal = 0;

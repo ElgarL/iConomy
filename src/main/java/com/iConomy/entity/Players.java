@@ -900,7 +900,7 @@ public class Players implements Listener {
                     if (isPlayer)
                         showBankAccounts(sender, player.getName());
                     else {
-                        Messaging.send("`RCannot show bank list without organism.");
+                        Messaging.send("`RCannot show bank list without an organism.");
                     }
 
                     return true;
@@ -931,7 +931,7 @@ public class Players implements Listener {
                                     Messaging.send(this.Template.color("error.bank.account.none"));
                             }
                         } else {
-                            Messaging.send(ChatColor.RED + "Cannot show main bank without organism.");
+                            Messaging.send(ChatColor.RED + "Cannot show main bank without an organism.");
                         }
 
                         return true;
@@ -1276,7 +1276,7 @@ public class Players implements Listener {
                     if (isPlayer)
                         showBalance(player.getName(), player, true);
                     else {
-                        Messaging.send("`RCannot show balance without organism.");
+                        Messaging.send("`RCannot show balance without an organism.");
                     }
 
                     return true;
