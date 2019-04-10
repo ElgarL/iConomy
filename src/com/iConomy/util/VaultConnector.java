@@ -13,91 +13,90 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 
-
 public class VaultConnector implements Economy {
-	private iConomy plugin;
-	private String name;
-	
-	public VaultConnector(iConomy plugin) {
-		this.plugin = plugin;
-		//Bukkit.getServer().getPluginManager().registerEvents(new EconomyServerListener(), plugin);
-	}
-	
-	@Override
-	public boolean isEnabled() {
-		return plugin != null && plugin.isEnabled();
-	}
+    private iConomy plugin;
+    private String name;
 
-	@Override
-	public String getName() {
-		name = "iConomy " + plugin.getDescription().getVersion();
-		return name;
-	}
-	
-	@Override
-	public boolean createPlayerAccount(String playerName) {
+    public VaultConnector(iConomy plugin) {
+        this.plugin = plugin;
+        //Bukkit.getServer().getPluginManager().registerEvents(new EconomyServerListener(), plugin);
+    }
 
-		if (hasAccount(playerName)) {
+    @Override
+    public boolean isEnabled() {
+        return plugin != null && plugin.isEnabled();
+    }
+
+    @Override
+    public String getName() {
+        name = "iConomy " + plugin.getDescription().getVersion();
+        return name;
+    }
+
+    @Override
+    public boolean createPlayerAccount(String playerName) {
+
+        if (hasAccount(playerName)) {
             return false;
         }
         iConomy.getAccount(playerName);
         return true;
-	}
+    }
 
-	@Override
-	public boolean createPlayerAccount(OfflinePlayer player) {
+    @Override
+    public boolean createPlayerAccount(OfflinePlayer player) {
 
-		if (hasAccount(player.getName())) {
+        if (hasAccount(player.getName())) {
             return false;
         }
         iConomy.getAccount(player.getName());
         return true;
-	}
+    }
 
-	@Override
-	public boolean createPlayerAccount(String playerName, String arg1) {
+    @Override
+    public boolean createPlayerAccount(String playerName, String arg1) {
 
-		if (hasAccount(playerName)) {
+        if (hasAccount(playerName)) {
             return false;
         }
         iConomy.getAccount(playerName);
         return true;
-	}
+    }
 
-	@Override
-	public boolean createPlayerAccount(OfflinePlayer player, String arg1) {
+    @Override
+    public boolean createPlayerAccount(OfflinePlayer player, String arg1) {
 
-		if (hasAccount(player.getName())) {
+        if (hasAccount(player.getName())) {
             return false;
         }
         iConomy.getAccount(player.getName());
         return true;
-	}
+    }
 
-	@Override
-	public String currencyNamePlural() {
+    @Override
+    public String currencyNamePlural() {
 
-		try {
+        try {
             return Constants.Major.get(1);
         } catch (Exception e) {
             return "";
         }
-	}
+    }
 
-	@Override
-	public String currencyNameSingular() {
+    @Override
+    public String currencyNameSingular() {
 
-		try {
+        try {
             return Constants.Major.get(0);
         } catch (Exception e) {
             return "";
         }
-	}
-	
-	@Override
-	public EconomyResponse depositPlayer(String playerName, double amount) {
+    }
 
-		double balance;
+    @Override
+    public EconomyResponse depositPlayer(String playerName, double amount) {
+
+        double balance;
         EconomyResponse.ResponseType type;
         String errorMessage = null;
 
@@ -109,12 +108,12 @@ public class VaultConnector implements Economy {
         iConomy.getTransactions().insert("[Vault]", playerName, 0.0D, balance, 0.0D, amount, 0.0D);
 
         return new EconomyResponse(amount, balance, type, errorMessage);
-	}
+    }
 
-	@Override
-	public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
+    @Override
+    public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
 
-		double balance;
+        double balance;
         EconomyResponse.ResponseType type;
         String errorMessage = null;
 
@@ -126,12 +125,12 @@ public class VaultConnector implements Economy {
         iConomy.getTransactions().insert("[Vault]", player.getName(), 0.0D, balance, 0.0D, amount, 0.0D);
 
         return new EconomyResponse(amount, balance, type, errorMessage);
-	}
+    }
 
-	@Override
-	public EconomyResponse depositPlayer(String playerName, String world, double amount) {
+    @Override
+    public EconomyResponse depositPlayer(String playerName, String world, double amount) {
 
-		double balance;
+        double balance;
         EconomyResponse.ResponseType type;
         String errorMessage = null;
 
@@ -143,12 +142,12 @@ public class VaultConnector implements Economy {
         iConomy.getTransactions().insert("[Vault]", playerName, 0.0D, balance, 0.0D, amount, 0.0D);
 
         return new EconomyResponse(amount, balance, type, errorMessage);
-	}
+    }
 
-	@Override
-	public EconomyResponse depositPlayer(OfflinePlayer player, String world, double amount) {
+    @Override
+    public EconomyResponse depositPlayer(OfflinePlayer player, String world, double amount) {
 
-		double balance;
+        double balance;
         EconomyResponse.ResponseType type;
         String errorMessage = null;
 
@@ -160,107 +159,107 @@ public class VaultConnector implements Economy {
         iConomy.getTransactions().insert("[Vault]", player.getName(), 0.0D, balance, 0.0D, amount, 0.0D);
 
         return new EconomyResponse(amount, balance, type, errorMessage);
-	}
+    }
 
-	@Override
-	public String format(double amount) {
+    @Override
+    public String format(double amount) {
 
-		 return iConomy.format(amount);
-	}
+        return iConomy.format(amount);
+    }
 
-	@Override
-	public int fractionalDigits() {
+    @Override
+    public int fractionalDigits() {
 
-		return 0;
-	}
+        return 0;
+    }
 
-	@Override
-	public double getBalance(String playerName) {
+    @Override
+    public double getBalance(String playerName) {
 
-		return iConomy.getAccount(playerName).getHoldings().balance();
-	}
+        return iConomy.getAccount(playerName).getHoldings().balance();
+    }
 
-	@Override
-	public double getBalance(OfflinePlayer player) {		
-		return iConomy.getAccount(player.getName()).getHoldings().balance();
-	}
+    @Override
+    public double getBalance(OfflinePlayer player) {
+        return iConomy.getAccount(player.getName()).getHoldings().balance();
+    }
 
-	@Override
-	public double getBalance(String playerName, String world) {
+    @Override
+    public double getBalance(String playerName, String world) {
 
-		return iConomy.getAccount(playerName).getHoldings().balance();
-	}
+        return iConomy.getAccount(playerName).getHoldings().balance();
+    }
 
-	@Override
-	public double getBalance(OfflinePlayer player, String world) {
+    @Override
+    public double getBalance(OfflinePlayer player, String world) {
 
-		return iConomy.getAccount(player.getName()).getHoldings().balance();
-	}
+        return iConomy.getAccount(player.getName()).getHoldings().balance();
+    }
 
-	@Override
-	public List<String> getBanks() {
+    @Override
+    public List<String> getBanks() {
 
-		return new ArrayList<String>();
-	}
+        return new ArrayList<String>();
+    }
 
-	@Override
-	public boolean has(String playerName, double amount) {
-		
+    @Override
+    public boolean has(String playerName, double amount) {
+
         return getBalance(playerName) >= amount;
-        
+
     }
 
-	@Override
-	public boolean has(OfflinePlayer player, double amount) {
-		
+    @Override
+    public boolean has(OfflinePlayer player, double amount) {
+
         return getBalance(player.getName()) >= amount;
-        
+
     }
 
-	@Override
-	public boolean has(String playerName, String world, double amount) {
+    @Override
+    public boolean has(String playerName, String world, double amount) {
 
-		return getBalance(playerName) >= amount;
-	}
+        return getBalance(playerName) >= amount;
+    }
 
-	@Override
-	public boolean has(OfflinePlayer player, String world, double amount) {
+    @Override
+    public boolean has(OfflinePlayer player, String world, double amount) {
 
-		return getBalance(player.getName()) >= amount;
-	}
+        return getBalance(player.getName()) >= amount;
+    }
 
-	@Override
-	public boolean hasAccount(String playerName) {
+    @Override
+    public boolean hasAccount(String playerName) {
 
-		return iConomy.hasAccount(playerName);
-	}
+        return iConomy.hasAccount(playerName);
+    }
 
-	@Override
-	public boolean hasAccount(OfflinePlayer player) {
+    @Override
+    public boolean hasAccount(OfflinePlayer player) {
 
-		return iConomy.hasAccount(player.getName());
-	}
+        return iConomy.hasAccount(player.getName());
+    }
 
-	@Override
-	public boolean hasAccount(String playerName, String worldName) {
+    @Override
+    public boolean hasAccount(String playerName, String worldName) {
 
-		return iConomy.hasAccount(playerName);
-	}
+        return iConomy.hasAccount(playerName);
+    }
 
-	@Override
-	public boolean hasAccount(OfflinePlayer player, String worldName) {
-		return iConomy.hasAccount(player.getName());
-	}
+    @Override
+    public boolean hasAccount(OfflinePlayer player, String worldName) {
+        return iConomy.hasAccount(player.getName());
+    }
 
-	@Override
-	public boolean hasBankSupport() {
-		return false;
-	}
+    @Override
+    public boolean hasBankSupport() {
+        return false;
+    }
 
-	@Override
-	public EconomyResponse withdrawPlayer(String playerName, double amount) {
+    @Override
+    public EconomyResponse withdrawPlayer(String playerName, double amount) {
 
-		double balance;
+        double balance;
         EconomyResponse.ResponseType type;
         String errorMessage = null;
 
@@ -280,12 +279,12 @@ public class VaultConnector implements Economy {
             errorMessage = "Insufficient funds";
             return new EconomyResponse(amount, balance, type, errorMessage);
         }
-	}
+    }
 
-	@Override
-	public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
+    @Override
+    public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
 
-		double balance;
+        double balance;
         EconomyResponse.ResponseType type;
         String errorMessage = null;
 
@@ -305,12 +304,12 @@ public class VaultConnector implements Economy {
             errorMessage = "Insufficient funds";
             return new EconomyResponse(amount, balance, type, errorMessage);
         }
-	}
+    }
 
-	@Override
-	public EconomyResponse withdrawPlayer(String playerName, String world, double amount) {
+    @Override
+    public EconomyResponse withdrawPlayer(String playerName, String world, double amount) {
 
-		double balance;
+        double balance;
         EconomyResponse.ResponseType type;
         String errorMessage = null;
 
@@ -330,12 +329,12 @@ public class VaultConnector implements Economy {
             errorMessage = "Insufficient funds";
             return new EconomyResponse(amount, balance, type, errorMessage);
         }
-	}
+    }
 
-	@Override
-	public EconomyResponse withdrawPlayer(OfflinePlayer player, String world, double amount) {
+    @Override
+    public EconomyResponse withdrawPlayer(OfflinePlayer player, String world, double amount) {
 
-		double balance;
+        double balance;
         EconomyResponse.ResponseType type;
         String errorMessage = null;
 
@@ -355,70 +354,70 @@ public class VaultConnector implements Economy {
             errorMessage = "Insufficient funds";
             return new EconomyResponse(amount, balance, type, errorMessage);
         }
-	}
+    }
 
-	@Override
+    @Override
     public EconomyResponse bankBalance(String arg0) {
 
-		return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single bank accounts!");		
-	}
+        return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single bank accounts!");
+    }
 
-	@Override
-	public EconomyResponse bankDeposit(String arg0, double arg1) {
+    @Override
+    public EconomyResponse bankDeposit(String arg0, double arg1) {
 
-		return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single bank accounts!");
-	}
+        return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single bank accounts!");
+    }
 
-	@Override
-	public EconomyResponse bankHas(String arg0, double arg1) {
+    @Override
+    public EconomyResponse bankHas(String arg0, double arg1) {
 
-		return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single bank accounts!");
-	}
+        return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single bank accounts!");
+    }
 
-	@Override
-	public EconomyResponse bankWithdraw(String arg0, double arg1) {
+    @Override
+    public EconomyResponse bankWithdraw(String arg0, double arg1) {
 
-		return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single bank accounts!");
-	}
+        return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single bank accounts!");
+    }
 
-	@Override
-	public EconomyResponse createBank(String name, String player) {
+    @Override
+    public EconomyResponse createBank(String name, String player) {
         return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single account banks!");
     }
 
-	@Override
-	public EconomyResponse createBank(String arg0, OfflinePlayer arg1) {
+    @Override
+    public EconomyResponse createBank(String arg0, OfflinePlayer arg1) {
 
-		return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single account banks!");
-	}
-	
-	@Override
-	public EconomyResponse isBankMember(String arg0, String arg1) {
+        return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single account banks!");
+    }
 
-		return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single bank accounts!");
-	}
+    @Override
+    public EconomyResponse isBankMember(String arg0, String arg1) {
 
-	@Override
-	public EconomyResponse isBankMember(String arg0, OfflinePlayer arg1) {
+        return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single bank accounts!");
+    }
 
-		return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single bank accounts!");
-	}
+    @Override
+    public EconomyResponse isBankMember(String arg0, OfflinePlayer arg1) {
 
-	@Override
-	public EconomyResponse isBankOwner(String arg0, String arg1) {
+        return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single bank accounts!");
+    }
 
-		return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single bank accounts!");
-	}
+    @Override
+    public EconomyResponse isBankOwner(String arg0, String arg1) {
 
-	@Override
-	public EconomyResponse isBankOwner(String arg0, OfflinePlayer arg1) {
+        return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single bank accounts!");
+    }
 
-		return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single bank accounts!");
-	}
-	
-	@Override
-	public EconomyResponse deleteBank(String arg0) {
+    @Override
+    public EconomyResponse isBankOwner(String arg0, OfflinePlayer arg1) {
 
-		return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support bank accounts!");
-	}
+        return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support single bank accounts!");
+    }
+
+    @Override
+    public EconomyResponse deleteBank(String arg0) {
+
+        return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED, "iConomy5 does not support bank accounts!");
+    }
 }
