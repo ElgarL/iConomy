@@ -5,10 +5,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.iConomy</groupId>
 	<artifactId>iConomy</artifactId>
-	<version>5.08</version>
+	<version>5.09-SNAPSHOT</version>
 	<name>iConomy 5</name>
 	<description>The good ole iConomy 5</description>
-	<url>https://github.com/LlmDl/iConomy</url>
+	<url>https://github.com/iconomy5legacy/iConomy</url>
 
 	<properties>
 		<project.build.number>0</project.build.number>
