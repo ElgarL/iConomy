@@ -1,3 +1,9 @@
+5.9:
+  - Update API to MC 1.14
+  - Add Towny to pom.xml
+  - Fix up async errors for 1.14 compatibility
+5.8:
+  - Fixes by graywolf336
 5.7:
   - Improved the vault integration
   - Logging of transactions done via Vault now happens

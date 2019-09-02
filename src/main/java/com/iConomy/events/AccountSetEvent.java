@@ -1,5 +1,6 @@
 package com.iConomy.events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -9,7 +10,7 @@ public class AccountSetEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
 
     public AccountSetEvent(String account, double balance) {
-        super();
+    	super(!Bukkit.getServer().isPrimaryThread());
         this.account = account;
         this.balance = balance;
     }

@@ -1,10 +1,10 @@
 name: iConomy
 main: com.iConomy.iConomy
-version: 5.08
+version: ${project.version}
+api-version: ${project.bukkitAPIVersion}
 authors: [Nijikokun, ElgarL, LlmDl, graywolf336]
 softdepend: [Vault, Towny]
 load: startup
-api-version: 1.13
 commands:
     money:
         description: Controls account balances and more

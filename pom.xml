@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.iConomy</groupId>
 	<artifactId>iConomy</artifactId>
-	<version>5.09-SNAPSHOT</version>
+	<version>5.09</version>
 	<name>iConomy 5</name>
 	<description>The good ole iConomy 5</description>
 	<url>https://github.com/iconomy5legacy/iConomy</url>
@@ -13,13 +13,11 @@
 	<properties>
 		<project.build.number>0</project.build.number>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.bukkitAPIVersion>1.14</project.bukkitAPIVersion>
 	</properties>
 
 	<repositories>
-		<repository>
-			<id>repo-release</id>
-			<url>https://repo.craftyn.com/repository/internal/</url>
-		</repository>
+		
 
 		<repository>
 			<id>spigotmc-repo</id>
@@ -29,6 +27,16 @@
 		<repository>
 			<id>vault-repo</id>
 			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
+		</repository>
+		
+		 <repository>
+            <id>articdive-repo</id>
+            <url>https://nexus.articdive.de/repository/maven-releases</url>
+        </repository>
+        
+        <repository>
+			<id>repo-release</id>
+			<url>https://repo.craftyn.com/repository/internal/</url>
 		</repository>
 	</repositories>
 
@@ -43,14 +51,14 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.13.2-R0.1-SNAPSHOT</version>
+			<version>1.14.4-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>com.palmergames.bukkit</groupId>
+			<groupId>com.palmergames</groupId>
 			<artifactId>Towny</artifactId>
-			<version>0.93.0.0</version>
+			<version>0.94.0.5</version>
 			<scope>provided</scope>
 		</dependency>
 
