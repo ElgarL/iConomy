@@ -17,26 +17,24 @@
 	</properties>
 
 	<repositories>
-		
-
 		<repository>
 			<id>spigotmc-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/groups/public</url>
 		</repository>
-
-		<repository>
-			<id>vault-repo</id>
-			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
-		</repository>
 		
-		 <repository>
-            <id>articdive-repo</id>
-            <url>https://nexus.articdive.de/repository/maven-releases</url>
-        </repository>
+		<repository>
+			<id>github-towny</id>
+			<url>https://maven.pkg.github.com/TownyAdvanced/Towny</url>
+		</repository>
         
         <repository>
 			<id>repo-release</id>
 			<url>https://repo.craftyn.com/repository/internal/</url>
+		</repository>
+		
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
 		</repository>
 	</repositories>
 
@@ -56,14 +54,14 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.palmergames</groupId>
+			<groupId>com.palmergames.bukkit.towny</groupId>
 			<artifactId>Towny</artifactId>
-			<version>0.94.0.5</version>
+			<version>0.96.1.8</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>net.milkbowl.vault</groupId>
+			<groupId>com.github.MilkBowl</groupId>
 			<artifactId>VaultAPI</artifactId>
 			<version>1.7</version>
 			<scope>provided</scope>
