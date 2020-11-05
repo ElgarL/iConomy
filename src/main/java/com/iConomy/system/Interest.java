@@ -23,7 +23,7 @@ public class Interest extends TimerTask {
     Template Template = null;
 
     public Interest(String directory) {
-        this.Template = new Template(directory, "Messages.yml");
+        this.Template = new Template(directory, "Template.yml");
     }
 
     public void run() {
@@ -36,6 +36,9 @@ public class Interest extends TimerTask {
         HashMap<String, Integer> bankPlayers = new HashMap<String, Integer>();
 
         if (Constants.InterestOnline) {
+        	/*
+             * Select all Online Players
+             */
             Collection<? extends Player> player = iConomy.getBukkitServer().getOnlinePlayers();
 
             if (Constants.InterestType.equalsIgnoreCase("players") || !Constants.Banking) {
@@ -51,6 +54,9 @@ public class Interest extends TimerTask {
                 }
             }
         } else {
+        	/*
+        	 * Select ALL players.
+        	 */
             conn = iConomy.getiCoDatabase().getConnection();
             try {
                 if (Constants.InterestType.equalsIgnoreCase("players") || !Constants.Banking)
@@ -133,8 +139,10 @@ public class Interest extends TimerTask {
                             ps.setString(2, name);
                             ps.addBatch();
 
-                            if (Constants.InterestAnn && Constants.InterestOnline) {
-                                Messaging.send(iConomy.getBukkitServer().getPlayer(name), this.Template.parse("interest.announcement", new String[] { "+amount,+money,+interest,+a,+m,+i" }, new Object[] { iConomy.format(amount) }));
+                            if (Constants.InterestAnn) {
+                            	Player player = iConomy.getBukkitServer().getPlayer(name);
+                            	if (player != null)
+                            		Messaging.send(player, this.Template.parse("interest.announcement", new String[] { "+amount,+money,+interest,+a,+m,+i" }, new Object[] { iConomy.format(amount) }));
                             }
 
                             if (amount < 0.0D)
@@ -172,7 +180,9 @@ public class Interest extends TimerTask {
                             ps.addBatch();
 
                             if (Constants.InterestAnn && Constants.InterestOnline) {
-                                Messaging.send(iConomy.getBukkitServer().getPlayer(name), this.Template.parse("interest.announcement", new String[] { "+amount,+money,+interest,+a,+m,+i" }, new Object[] { iConomy.format(amount) }));
+                            	Player player = iConomy.getBukkitServer().getPlayer(name);
+                            	if (player != null)
+                            		Messaging.send(player, this.Template.parse("interest.announcement", new String[] { "+amount,+money,+interest,+a,+m,+i" }, new Object[] { iConomy.format(amount) }));
                             }
 
                             if (amount < 0.0D)
