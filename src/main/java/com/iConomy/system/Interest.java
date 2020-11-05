@@ -72,6 +72,9 @@ public class Interest extends TimerTask {
                 System.out.println("[iConomy] Error executing query for interest: " + E.getMessage());
             } finally {
                 if (conn != null) {
+                	try {
+						conn.close();
+					} catch (SQLException e) {}
                     conn = null;
                 }
                 if (ps != null) {

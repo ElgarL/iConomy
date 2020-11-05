@@ -187,9 +187,10 @@ public final class FileManager {
 
                 return false;
             }
-
+            
+            input.close();
             return true;
-        } catch (FileNotFoundException ex) {
+        } catch (IOException ex) {
             log(Level.SEVERE, ex);
         }
 

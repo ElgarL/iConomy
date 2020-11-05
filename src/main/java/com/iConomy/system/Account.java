@@ -165,7 +165,8 @@ public class Account {
             ps = conn.prepareStatement("UPDATE " + Constants.SQLTable + "_BankRelations SET main = 0 WHERE account_name = ? AND main = 1");
             ps.setString(1, this.name);
             ps.executeUpdate();
-            ps.clearParameters();
+            
+            ps.close();
 
             ps = conn.prepareStatement("UPDATE " + Constants.SQLTable + "_BankRelations SET main = 1 WHERE account_name = ? AND bank_id = ?");
             ps.setString(1, this.name);

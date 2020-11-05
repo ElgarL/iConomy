@@ -7,7 +7,6 @@ import org.bukkit.OfflinePlayer;
 
 import com.iConomy.iConomy;
 import com.iConomy.system.Holdings;
-import com.iConomy.util.Constants;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;

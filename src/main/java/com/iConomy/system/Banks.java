@@ -246,6 +246,7 @@ public class Banks {
             conn = iConomy.getiCoDatabase().getConnection();
             ps = conn.prepareStatement("SELECT * FROM " + Constants.SQLTable + "_Banks");
             rs = ps.executeQuery();
+            ps.close();
 
             ps = conn.prepareStatement("DELETE FROM " + Constants.SQLTable + "_BankRelations WHERE bank_id = ? AND holdings = ?");
 
