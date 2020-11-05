@@ -281,8 +281,8 @@ public class iConomy extends JavaPlugin {
                     log.warning("[iConomy] Importer could not parse account for " + account.getName());
                 }
 
-                if (i % 10 == 0) {
-                    log.info(i + " accounts loaded.");
+                if ((i > 0) && (i % 10 == 0)) {
+                    log.info(i + " accounts read...");
                 }
                 i++;
                 reader.close();
@@ -292,6 +292,7 @@ public class iConomy extends JavaPlugin {
                 e.printStackTrace();
             }
         }
+        log.info(i + " accounts loaded.");
         return true;
     }
 
