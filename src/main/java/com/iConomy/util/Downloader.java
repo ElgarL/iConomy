@@ -74,7 +74,7 @@ public class Downloader {
 
     //See: https://stackoverflow.com/a/1011126
     private void addURLToClassLoader(URL u) throws IOException {
-        URLClassLoader sysloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+        URLClassLoader sysloader = (URLClassLoader) this.getClass().getClassLoader();
         Class<?> sysclass = URLClassLoader.class;
 
         try {
