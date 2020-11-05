@@ -387,27 +387,8 @@ public class Account {
     }
 
     public void remove() {
-        AccountRemoveEvent Event = new AccountRemoveEvent(this.name);
-        iConomy.getBukkitServer().getPluginManager().callEvent(Event);
-
-        if (!Event.isCancelled()) {
-            Connection conn = null;
-            PreparedStatement ps = null;
-            try {
-                conn = iConomy.getiCoDatabase().getConnection();
-                ps = conn.prepareStatement("DELETE FROM " + Constants.SQLTable + " WHERE username = ?");
-                ps.setString(1, this.name);
-                ps.executeUpdate();
-            } catch (Exception ex) {
-                System.out.println("[iConomy] Failed to remove account: " + ex);
-            } finally {
-                if (ps != null)
-                    try {
-                        ps.close();
-                    } catch (SQLException ex) {}
-                if (conn != null)
-                    iConomy.getiCoDatabase().close(conn);
-            }
-        }
+    	
+        AccountRemoveEvent event = new AccountRemoveEvent(this.name);
+        event.schedule(event);
     }
 }

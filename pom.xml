@@ -13,7 +13,7 @@
 	<properties>
 		<project.build.number>0</project.build.number>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.bukkitAPIVersion>1.14</project.bukkitAPIVersion>
+        <project.bukkitAPIVersion>1.13</project.bukkitAPIVersion>
 	</properties>
 
 	<repositories>
