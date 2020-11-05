@@ -1,0 +1,79 @@
+name: iConomy
+main: com.iConomy.iConomy
+version: ${project.version}
+api-version: ${project.bukkitAPIVersion}
+authors: [Nijikokun, ElgarL, LlmDl, graywolf336]
+softdepend: [Vault, Towny]
+load: startup
+commands:
+    money:
+        description: Controls account balances and more
+        usage: /money
+    bank:
+        description: Control, list, create, and do various bank features.
+        usage: /bank    
+    icoimport:
+        description: Imports an Essentials Economy into iConomy.
+        usage: /icoimport
+        
+permissions:
+    iConomy.admin:
+        default: false
+        children:
+            iConomy.admin.account.create: true
+            iConomy.admin.account.remove: true
+            iConomy.admin.reset: true
+            iConomy.admin.bank.create: true
+            iConomy.admin.empty: true
+            iConomy.admin.purge: true
+            iConomy.admin.stats: true
+            iConomy.admin.grant: true
+            iConomy.admin.hide: true
+            iConomy.admin.set: true
+            
+    iConomy.admin.account.create:
+        default: op
+    iConomy.admin.account.remove:
+        default: op
+    iConomy.admin.reset:
+        default: op
+    iConomy.admin.bank.create:
+        default: op
+    iConomy.admin.empty:
+        default: op
+    iConomy.admin.purge:
+        default: op
+    iConomy.admin.stats:
+        default: op
+    iConomy.admin.grant:
+        default: op
+    iConomy.admin.hide:
+        default: op
+    iConomy.admin.set:
+        default: op
+        
+    iConomy.access:
+        default: true
+    iConomy.list:
+        default: false
+    iConomy.payment:
+        default: true
+    iConomy.rank:
+        default: true
+    
+#    iConomy.bank.list:
+#    iConomy.bank.main:
+#    iConomy.bank.access:
+#    iConomy.bank.list:
+#    iConomy.bank.main.view:
+#    iConomy.bank.join:
+#    iConomy.bank.leave:
+#    iConomy.bank.deposit:
+#    iConomy.bank.withdraw:
+#    iConomy.bank.transfer:
+#    iConomy.bank.main.change:
+#    iConomy.bank.admin.set:
+#    iConomy.bank.transfer.multiple:
+    
+    
+    

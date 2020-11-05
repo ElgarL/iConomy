@@ -1,0 +1,16 @@
+5.9:
+  - Update API to MC 1.14
+  - Add Towny to pom.xml
+  - Fix up async errors for 1.14 compatibility
+5.8:
+  - Fixes by graywolf336
+5.7:
+  - Improved the vault integration
+  - Logging of transactions done via Vault now happens
+5.6:
+  - Add the ability to declare that mysql uses SSL
+5.5:
+  - Change dependency locations so h2 and mysql-connector will auto download again.
+  - Fix messages' colour translation.
+  - Add support for Vault-API
+  
