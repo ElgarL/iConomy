@@ -1,6 +1,7 @@
 5.10:
   - Remove Towny dependency and blind convert town/nation accounts.
   - Refactor event system to support pre 1.14 servers.
+  - Add support for Towny debt accounts.
 5.9:
   - Update API to MC 1.14
   - Add Towny to pom.xml

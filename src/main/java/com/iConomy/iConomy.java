@@ -32,6 +32,8 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -204,16 +206,60 @@ public class iConomy extends JavaPlugin {
     }
 
     private boolean importEssEco() {
+    	
+    	YamlConfiguration data = new YamlConfiguration();
         File accountsFolder = null;
+        boolean hasTowny = false;
+        String townPrefix = "";
+        String nationPrefix = "";
+        String debtPrefix = "";
+        String essTownPrefix = "";
+        String essNationPrefix = "";
+        String essDebtPrefix = "";
+        /*
+         * Try to access essentials data.
+         */
         try {
             accountsFolder = new File("plugins/Essentials/userdata/");
         } catch (Exception e) {
-            log.warning("Essentials data not found in plugins/essentials/userdata/");
+            log.warning("Essentials data not found.");
             return false;
         }
 
         if (!accountsFolder.isDirectory()) {
             return false;
+        }
+        
+        /*
+         * Read Towny settings.
+         */
+        File townySettings = null;
+        try {
+        	townySettings = new File("plugins/Towny/settings/config.yml");
+        } catch (Exception e) {
+            log.warning("Towny data not found.");
+        }
+
+        if (townySettings.isFile()) {
+
+    		try {
+    			data.load(townySettings);
+    		} catch (IOException | InvalidConfigurationException e) {
+    			log.warning("Towny data is not readable!");
+                return false;
+    		}
+            
+    		townPrefix = data.getString("economy.town_prefix", "town-");
+    		nationPrefix = data.getString("economy.nation_prefix", "nation-");
+    		debtPrefix = data.getString("economy.debt_prefix", "[Debt]-");
+    		/*
+    		 * Essentials handles all NPC accounts as lower case.
+    		 */
+    		essTownPrefix = townPrefix.replaceAll("-", "_").toLowerCase();
+    		essNationPrefix = nationPrefix.replaceAll("-", "_").toLowerCase();
+    		essDebtPrefix = debtPrefix.replaceAll("[\\[\\]-]", "_").toLowerCase();
+    		
+    		hasTowny = true;
         }
 
         File[] accounts = accountsFolder.listFiles(new FilenameFilter() {
@@ -224,74 +270,76 @@ public class iConomy extends JavaPlugin {
 
         log.info("Amount of accounts found:" + accounts.length);
         int i = 0;
-        String line;
+        
         for (File account : accounts) {
             String uuid = null;
-            String name = null;
+            String name = "";
             double money = 0;
-            boolean haveMoney = false;
+            
+            try {
+            	data = new YamlConfiguration();
+    			data.load(account);
+    		} catch (IOException | InvalidConfigurationException e) {
+                continue;
+    		}
+            
             if (account.getName().contains("-")) {
                 uuid = account.getName().replace(".yml", "");
             }
+            
+            if (uuid != null) {
+            	name = data.getString("lastAccountName", "");
+            	try {
+            		money = Double.parseDouble(data.getString("money", "0"));
+	            } catch (NumberFormatException e) {
+	                money = 0;
+	            }
+                String actualName;
+                /*
+                 * Check for Town/Nation accounts.
+                 */
+                if (hasTowny) {
+                	if (name.startsWith(essTownPrefix)) {
+                        actualName = name.substring(essTownPrefix.length());
+                        log.info("[iConomy] Import: Town account found: " + actualName);
+                        name = townPrefix + actualName;
+                        
+                    } else if (name.startsWith(essNationPrefix)) {
+                        actualName = name.substring(essNationPrefix.length());
+                        log.info("[iConomy] Import: Nation account found: " + actualName);
+                        name = nationPrefix + actualName;
+                        
+                    } else if (name.startsWith(essDebtPrefix)) {
+                        actualName = name.substring(essDebtPrefix.length());
+                        log.info("[iConomy] Import: Debt account found: " + actualName);
+                        name = debtPrefix + actualName;
+                    }
+                }
+            }
+            
             try {
-                BufferedReader reader = new BufferedReader(new FileReader(account));
-                try {
-                    while ((line = reader.readLine()) != null) {
-
-                        if (line.startsWith("money:")) {
-                            String value = line.replace("money: '", "");
-                            if (value.contains("money")) {
-                                value = line.replace("money: ", "");
-                            }
-                            money = Double.parseDouble(value.substring(0, value.length() - 1));
-                            haveMoney = true;
-                        } else if (line.startsWith("lastAccountName:")) {
-                            name = line.replace("lastAccountName: ", "").trim().replace("\'", "").replace("\"", "");
-                            String actualName;
-                            
-                            if (name.startsWith("town_")) {
-                                actualName = name.substring(5);
-                                log.info("[iConomy] Import: Town account found: " + actualName);
-                                name = "town-" + actualName;
-                                
-                            } else if (name.startsWith("nation_")) {
-                                actualName = name.substring(7);
-                                log.info("[iConomy] Import: Nation account found: " + actualName);
-                                name = "nation-" + actualName;
-                            }
-                        }
-                    }
-                } catch (NumberFormatException e) {
-                    log.warning("The account " + uuid + " don't have a valid money value!");
-                }
-
-                try {
-                    if (haveMoney) {
-                        if (Accounts.exists(name)) {
-                            if (Accounts.get(name).getHoldings().balance() == money) {
-                                continue;
-                            } else
-                                Accounts.get(name).getHoldings().set(money);
-                        } else {
-                            Accounts.create(name);
+                if (money > 0) {
+                    if (Accounts.exists(name)) {
+                        if (Accounts.get(name).getHoldings().balance() == money) {
+                            continue;
+                        } else
                             Accounts.get(name).getHoldings().set(money);
-                        }
+                    } else {
+                        Accounts.create(name);
+                        Accounts.get(name).getHoldings().set(money);
                     }
-                } catch (Exception e) {
-                    log.warning("[iConomy] Importer could not parse account for " + account.getName());
                 }
-
+                
                 if ((i > 0) && (i % 10 == 0)) {
                     log.info(i + " accounts read...");
                 }
                 i++;
-                reader.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+                
+            } catch (Exception e) {
+                log.warning("[iConomy] Importer could not parse account for " + account.getName());
             }
         }
+
         log.info(i + " accounts loaded.");
         return true;
     }
