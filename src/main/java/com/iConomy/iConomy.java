@@ -39,10 +39,6 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.object.TownyUniverse;
-
 public class iConomy extends JavaPlugin {
     public static Banks Banks = null;
     public static Accounts Accounts = null;
@@ -252,27 +248,16 @@ public class iConomy extends JavaPlugin {
                         } else if (line.startsWith("lastAccountName:")) {
                             name = line.replace("lastAccountName: ", "").trim().replace("\'", "").replace("\"", "");
                             String actualName;
+                            
                             if (name.startsWith("town_")) {
                                 actualName = name.substring(5);
-                                String townName = null;
-                                for (Town towns : TownyUniverse.getDataSource().getTowns()) {
-                                    townName = towns.getName();
-                                    if (townName.equalsIgnoreCase(actualName)) {
-                                        log.info("[iConomy] Import: Town account found: " + actualName);
-                                        name = "town-" + townName;
-                                    }
-                                }
+                                log.info("[iConomy] Import: Town account found: " + actualName);
+                                name = "town-" + actualName;
+                                
                             } else if (name.startsWith("nation_")) {
                                 actualName = name.substring(7);
-                                String nationName = null;
-                                for (Nation nations : TownyUniverse.getDataSource().getNations()) {
-                                    nationName = nations.getName();
-                                    if (nationName.equalsIgnoreCase(actualName)) {
-                                        log.info("[iConomy] Import: Nation account found: " + actualName);
-                                        name = "nation-" + nationName;
-                                    }
-                                }
-
+                                log.info("[iConomy] Import: Nation account found: " + actualName);
+                                name = "nation-" + actualName;
                             }
                         }
                     }
