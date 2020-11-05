@@ -11,6 +11,7 @@ import com.iConomy.system.Transactions;
 import com.iConomy.util.Constants;
 import com.iConomy.util.Downloader;
 import com.iConomy.util.FileManager;
+import com.iConomy.util.Messaging;
 import com.iConomy.util.Misc;
 import com.iConomy.util.VaultConnector;
 
@@ -198,11 +199,25 @@ public class iConomy extends JavaPlugin {
         String[] split = new String[args.length + 1];
         split[0] = cmd.getName().toLowerCase();
         System.arraycopy(args, 0, split, 1, args.length);
+        boolean isPlayer = sender instanceof Player;
 
-        if (!(sender instanceof Player) && split[0].equalsIgnoreCase("icoimport"))
-            return importEssEco();
-        else
-            return playerListener.onPlayerCommand(sender, split);
+        switch (commandLabel.toLowerCase()) {
+        
+        case "bank":
+        	if (!Constants.Banking) {
+        		Messaging.send("`RBanking is disabled.");
+        		return true;
+        	}
+
+        case "money":	// Allow bank to fall through to this case.
+        	return playerListener.onPlayerCommand(sender, split);
+        	
+        case "icoimport":
+        	if (!isPlayer)
+        		return importEssEco();
+        }
+        
+        return false;
     }
 
     private boolean importEssEco() {
