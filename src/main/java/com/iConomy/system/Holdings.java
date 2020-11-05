@@ -35,6 +35,14 @@ public class Holdings {
     public boolean isBank() {
         return this.bank;
     }
+    
+    public String getName() {
+    	return this.name;
+    }
+    
+    public int getBankId() {
+    	return this.bankId;
+    }
 
     public double balance() {
         return get();
@@ -81,38 +89,8 @@ public class Holdings {
     }
 
     public void set(double balance) {
-        AccountSetEvent Event = new AccountSetEvent(this.name, balance);
-        iConomy.getBukkitServer().getPluginManager().callEvent(Event);
-
-        Connection conn = null;
-        PreparedStatement ps = null;
-        try {
-            conn = iConomy.getiCoDatabase().getConnection();
-
-            if (this.bankId == 0) {
-                ps = conn.prepareStatement("UPDATE " + Constants.SQLTable + " SET balance = ? WHERE username = ?");
-                ps.setDouble(1, balance);
-                ps.setString(2, this.name);
-            } else {
-                ps = conn.prepareStatement("UPDATE " + Constants.SQLTable + "_BankRelations SET holdings = ? WHERE account_name = ? AND bank_id = ?");
-                ps.setDouble(1, balance);
-                ps.setString(2, this.name);
-                ps.setInt(3, this.bankId);
-            }
-
-            ps.executeUpdate();
-        } catch (Exception ex) {
-            System.out.println("[iConomy] Failed to set holdings: " + ex);
-        } finally {
-            if (ps != null)
-                try {
-                    ps.close();
-                } catch (SQLException ex) {}
-            if (conn != null)
-                try {
-                    conn.close();
-                } catch (SQLException ex) {}
-        }
+        AccountSetEvent event = new AccountSetEvent(this, balance);
+        event.schedule(event);
     }
 
     public void add(double amount) {
@@ -144,19 +122,13 @@ public class Holdings {
     }
 
     public void reset() {
-        AccountResetEvent Event = new AccountResetEvent(this.name);
-        iConomy.getBukkitServer().getPluginManager().callEvent(Event);
-
-        if (!Event.isCancelled())
-            set(Constants.Holdings);
+        AccountResetEvent event = new AccountResetEvent(this);
+        event.schedule(event);
     }
 
     private void math(double amount, double balance, double ending) {
-        AccountUpdateEvent Event = new AccountUpdateEvent(this.name, balance, ending, amount);
-        iConomy.getBukkitServer().getPluginManager().callEvent(Event);
-
-        if (!Event.isCancelled())
-            set(ending);
+        AccountUpdateEvent event = new AccountUpdateEvent(this, balance, ending, amount);
+        event.schedule(event);
     }
 
     public boolean isNegative() {

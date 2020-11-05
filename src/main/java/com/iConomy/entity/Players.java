@@ -894,7 +894,7 @@ public class Players implements Listener {
         boolean isPlayer = sender instanceof Player;
         Player player = sender instanceof Player ? (Player) sender : null;
 
-        if (split[0].equalsIgnoreCase("bank") && Constants.Banking) {
+        if (split[0].equalsIgnoreCase("bank")) {
             switch (split.length) {
                 case 1:
                     if (isPlayer)

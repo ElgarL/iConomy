@@ -98,7 +98,7 @@ public class Accounts {
             ps.setString(1, name);
             ps.executeUpdate();
 
-            ps.clearParameters();
+            ps.close();
 
             ps = conn.prepareStatement("DELETE FROM " + Constants.SQLTable + " WHERE account_name = ?");
             ps.setString(1, name);

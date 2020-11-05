@@ -1,19 +1,22 @@
 package com.iConomy.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.iConomy.iConomy;
+import com.iConomy.system.Holdings;
+
 public class AccountUpdateEvent extends Event {
-    private final String account;
+	
+    private final Holdings account;
     private double balance;
     private double previous;
     private double amount;
     private boolean cancelled = false;
     private static final HandlerList handlers = new HandlerList();
 
-    public AccountUpdateEvent(String account, double previous, double balance, double amount) {
-    	super(!Bukkit.getServer().isPrimaryThread());
+    public AccountUpdateEvent(Holdings account, double previous, double balance, double amount) {
+    	super();
         this.account = account;
         this.previous = previous;
         this.balance = balance;
@@ -21,7 +24,11 @@ public class AccountUpdateEvent extends Event {
     }
 
     public String getAccountName() {
-        return this.account;
+        return this.account.getName();
+    }
+    
+    public Holdings getAccount() {
+    	return account;
     }
 
     public double getAmount() {
@@ -56,4 +63,22 @@ public class AccountUpdateEvent extends Event {
     public static HandlerList getHandlerList() {
         return handlers;
     }
+    
+    public void schedule(AccountUpdateEvent event) {
+
+		synchronized (iConomy.instance.getServer()) {
+			if (iConomy.instance.getServer().getScheduler().scheduleSyncDelayedTask(iConomy.instance, new Runnable() {
+	
+				@Override
+				public void run() {
+	
+					iConomy.instance.getServer().getPluginManager().callEvent(event);
+					
+					if (!event.isCancelled())
+			            account.set(event.getBalance());
+				}
+			}, 1) == -1)
+				System.out.println("[iConomy] Could not schedule Account Update Event.");
+		}
+	}
 }

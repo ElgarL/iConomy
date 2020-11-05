@@ -11,6 +11,7 @@ import com.iConomy.system.Transactions;
 import com.iConomy.util.Constants;
 import com.iConomy.util.Downloader;
 import com.iConomy.util.FileManager;
+import com.iConomy.util.Messaging;
 import com.iConomy.util.Misc;
 import com.iConomy.util.VaultConnector;
 
@@ -32,16 +33,14 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.object.TownyUniverse;
 
 public class iConomy extends JavaPlugin {
     public static Banks Banks = null;
@@ -200,24 +199,82 @@ public class iConomy extends JavaPlugin {
         String[] split = new String[args.length + 1];
         split[0] = cmd.getName().toLowerCase();
         System.arraycopy(args, 0, split, 1, args.length);
+        boolean isPlayer = sender instanceof Player;
 
-        if (!(sender instanceof Player) && split[0].equalsIgnoreCase("icoimport"))
-            return importEssEco();
-        else
-            return playerListener.onPlayerCommand(sender, split);
+        switch (commandLabel.toLowerCase()) {
+        
+        case "bank":
+        	if (!Constants.Banking) {
+        		Messaging.send("`RBanking is disabled.");
+        		return true;
+        	}
+
+        case "money":	// Allow bank to fall through to this case.
+        	return playerListener.onPlayerCommand(sender, split);
+        	
+        case "icoimport":
+        	if (!isPlayer)
+        		return importEssEco();
+        }
+        
+        return false;
     }
 
     private boolean importEssEco() {
+    	
+    	YamlConfiguration data = new YamlConfiguration();
         File accountsFolder = null;
+        boolean hasTowny = false;
+        String townPrefix = "";
+        String nationPrefix = "";
+        String debtPrefix = "";
+        String essTownPrefix = "";
+        String essNationPrefix = "";
+        String essDebtPrefix = "";
+        /*
+         * Try to access essentials data.
+         */
         try {
             accountsFolder = new File("plugins/Essentials/userdata/");
         } catch (Exception e) {
-            log.warning("Essentials data not found in plugins/essentials/userdata/");
+            log.warning("Essentials data not found.");
             return false;
         }
 
         if (!accountsFolder.isDirectory()) {
             return false;
+        }
+        
+        /*
+         * Read Towny settings.
+         */
+        File townySettings = null;
+        try {
+        	townySettings = new File("plugins/Towny/settings/config.yml");
+        } catch (Exception e) {
+            log.warning("Towny data not found.");
+        }
+
+        if (townySettings.isFile()) {
+
+    		try {
+    			data.load(townySettings);
+    		} catch (IOException | InvalidConfigurationException e) {
+    			log.warning("Towny data is not readable!");
+                return false;
+    		}
+            
+    		townPrefix = data.getString("economy.town_prefix", "town-");
+    		nationPrefix = data.getString("economy.nation_prefix", "nation-");
+    		debtPrefix = data.getString("economy.debt_prefix", "[Debt]-");
+    		/*
+    		 * Essentials handles all NPC accounts as lower case.
+    		 */
+    		essTownPrefix = townPrefix.replaceAll("-", "_").toLowerCase();
+    		essNationPrefix = nationPrefix.replaceAll("-", "_").toLowerCase();
+    		essDebtPrefix = debtPrefix.replaceAll("[\\[\\]-]", "_").toLowerCase();
+    		
+    		hasTowny = true;
         }
 
         File[] accounts = accountsFolder.listFiles(new FilenameFilter() {
@@ -228,85 +285,77 @@ public class iConomy extends JavaPlugin {
 
         log.info("Amount of accounts found:" + accounts.length);
         int i = 0;
-        String line;
+        
         for (File account : accounts) {
             String uuid = null;
-            String name = null;
+            String name = "";
             double money = 0;
-            boolean haveMoney = false;
+            
+            try {
+            	data = new YamlConfiguration();
+    			data.load(account);
+    		} catch (IOException | InvalidConfigurationException e) {
+                continue;
+    		}
+            
             if (account.getName().contains("-")) {
                 uuid = account.getName().replace(".yml", "");
             }
+            
+            if (uuid != null) {
+            	name = data.getString("lastAccountName", "");
+            	try {
+            		money = Double.parseDouble(data.getString("money", "0"));
+	            } catch (NumberFormatException e) {
+	                money = 0;
+	            }
+                String actualName;
+                /*
+                 * Check for Town/Nation accounts.
+                 */
+                if (hasTowny) {
+                	if (name.startsWith(essTownPrefix)) {
+                        actualName = name.substring(essTownPrefix.length());
+                        log.info("[iConomy] Import: Town account found: " + actualName);
+                        name = townPrefix + actualName;
+                        
+                    } else if (name.startsWith(essNationPrefix)) {
+                        actualName = name.substring(essNationPrefix.length());
+                        log.info("[iConomy] Import: Nation account found: " + actualName);
+                        name = nationPrefix + actualName;
+                        
+                    } else if (name.startsWith(essDebtPrefix)) {
+                        actualName = name.substring(essDebtPrefix.length());
+                        log.info("[iConomy] Import: Debt account found: " + actualName);
+                        name = debtPrefix + actualName;
+                    }
+                }
+            }
+            
             try {
-                BufferedReader reader = new BufferedReader(new FileReader(account));
-                try {
-                    while ((line = reader.readLine()) != null) {
-
-                        if (line.startsWith("money:")) {
-                            String value = line.replace("money: '", "");
-                            if (value.contains("money")) {
-                                value = line.replace("money: ", "");
-                            }
-                            money = Double.parseDouble(value.substring(0, value.length() - 1));
-                            haveMoney = true;
-                        } else if (line.startsWith("lastAccountName:")) {
-                            name = line.replace("lastAccountName: ", "").trim().replace("\'", "").replace("\"", "");
-                            String actualName;
-                            if (name.startsWith("town_")) {
-                                actualName = name.substring(5);
-                                String townName = null;
-                                for (Town towns : TownyUniverse.getDataSource().getTowns()) {
-                                    townName = towns.getName();
-                                    if (townName.equalsIgnoreCase(actualName)) {
-                                        log.info("[iConomy] Import: Town account found: " + actualName);
-                                        name = "town-" + townName;
-                                    }
-                                }
-                            } else if (name.startsWith("nation_")) {
-                                actualName = name.substring(7);
-                                String nationName = null;
-                                for (Nation nations : TownyUniverse.getDataSource().getNations()) {
-                                    nationName = nations.getName();
-                                    if (nationName.equalsIgnoreCase(actualName)) {
-                                        log.info("[iConomy] Import: Nation account found: " + actualName);
-                                        name = "nation-" + nationName;
-                                    }
-                                }
-
-                            }
-                        }
-                    }
-                } catch (NumberFormatException e) {
-                    log.warning("The account " + uuid + " don't have a valid money value!");
-                }
-
-                try {
-                    if (haveMoney) {
-                        if (Accounts.exists(name)) {
-                            if (Accounts.get(name).getHoldings().balance() == money) {
-                                continue;
-                            } else
-                                Accounts.get(name).getHoldings().set(money);
-                        } else {
-                            Accounts.create(name);
+                if (money > 0) {
+                    if (Accounts.exists(name)) {
+                        if (Accounts.get(name).getHoldings().balance() == money) {
+                            continue;
+                        } else
                             Accounts.get(name).getHoldings().set(money);
-                        }
+                    } else {
+                        Accounts.create(name);
+                        Accounts.get(name).getHoldings().set(money);
                     }
-                } catch (Exception e) {
-                    log.warning("[iConomy] Importer could not parse account for " + account.getName());
                 }
-
-                if (i % 10 == 0) {
-                    log.info(i + " accounts loaded.");
+                
+                if ((i > 0) && (i % 10 == 0)) {
+                    log.info(i + " accounts read...");
                 }
                 i++;
-                reader.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+                
+            } catch (Exception e) {
+                log.warning("[iConomy] Importer could not parse account for " + account.getName());
             }
         }
+
+        log.info(i + " accounts loaded.");
         return true;
     }
 

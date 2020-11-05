@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.iConomy</groupId>
 	<artifactId>iConomy</artifactId>
-	<version>5.09</version>
+	<version>5.10</version>
 	<name>iConomy 5</name>
 	<description>The good ole iConomy 5</description>
 	<url>https://github.com/iconomy5legacy/iConomy</url>
@@ -13,18 +13,13 @@
 	<properties>
 		<project.build.number>0</project.build.number>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.bukkitAPIVersion>1.14</project.bukkitAPIVersion>
+        <project.bukkitAPIVersion>1.13</project.bukkitAPIVersion>
 	</properties>
 
 	<repositories>
 		<repository>
 			<id>spigotmc-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/groups/public</url>
-		</repository>
-		
-		<repository>
-			<id>github-towny</id>
-			<url>https://maven.pkg.github.com/TownyAdvanced/Towny</url>
 		</repository>
         
         <repository>
@@ -50,13 +45,6 @@
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
 			<version>1.14.4-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.palmergames.bukkit.towny</groupId>
-			<artifactId>Towny</artifactId>
-			<version>0.96.1.8</version>
 			<scope>provided</scope>
 		</dependency>
 
